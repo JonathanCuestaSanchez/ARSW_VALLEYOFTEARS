@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "000486fd-9e5c-4bda-9e40-f5756c01c655",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "maravilla": {
+      "ver": "1.0.3",
+      "uuid": "f6632096-bcc5-411e-b5f3-3f6e92b37bfa",
+      "rawTextureUuid": "000486fd-9e5c-4bda-9e40-f5756c01c655",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0.5,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 45,
+      "height": 41,
+      "rawWidth": 45,
+      "rawHeight": 42,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
