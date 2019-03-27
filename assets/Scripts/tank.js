@@ -145,8 +145,9 @@ cc.Class({
                 break;
 				
 			case cc.macro.KEY.space:
-				var bullet = cc.instantiate(this.bullet);
-				bullet.direccion = this.direction;
+                var bullet = cc.instantiate(this.bullet);
+               
+				bullet.getComponent("Bullet").direccion = this.direction;
 				bullet.x = this.node.position.x;
 				bullet.y = this.node.position.y;
 				// bullet.getComponent("Bullet").posX = this.rotationx;
@@ -154,7 +155,7 @@ cc.Class({
 				var scene = cc.find("Canvas");
 				scene.addChild(bullet);
 				bullet.active = true;
-				console.log("key for shoot");
+				
                 break;
 
             default:

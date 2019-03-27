@@ -14,8 +14,8 @@ cc.Class({
     properties: {
 		speed: 3000,
 		posX: 0,
-        posY: 0,
-		direccion: null,
+    posY: 0,
+		direccion: "up",
     },
 	
 
@@ -24,22 +24,23 @@ cc.Class({
     // onLoad () {},
 
     update: function (dt) {
-		console.log("actualizando bala");
+			
+	
         // var angle = Math.atan2(this.posX, this.posY);
 		if(this.direccion == "down"){
-			console.log("entreeee abajoo");
+			
 			this.node.x += this.speed * dt * Math.cos(90*Math.PI/180.0);      // 90 y 270 abajo    270 y 90 arriba
 			this.node.y += this.speed * dt * Math.sin(270*Math.PI/180.0);     //180 y 0 izquierda  0 y 180 derecha 
 		}else if(this.direccion == "up"){
-			console.log("entreeee arriba");
+			
 			this.node.x += this.speed * dt * Math.cos(270*Math.PI/180.0);      // 90 y 270 abajo    270 y 90 arriba
 			this.node.y += this.speed * dt * Math.sin(90*Math.PI/180.0);     //180 y 0 izquierda  0 y 180 derecha 
 		}else if(this.direccion == "left"){
-			console.log("entreeee Izquierda");
+			
 			this.node.x += this.speed * dt * Math.cos(180*Math.PI/180.0);      // 90 y 270 abajo    270 y 90 arriba
 			this.node.y += this.speed * dt * Math.sin(0*Math.PI/180.0);     //180 y 0 izquierda  0 y 180 derecha 
 		}else{
-			console.log("entreeee Derecha");
+			
 			this.node.x += this.speed * dt * Math.cos(0*Math.PI/180.0);      // 90 y 270 abajo    270 y 90 arriba
 			this.node.y += this.speed * dt * Math.sin(180*Math.PI/180.0);     //180 y 0 izquierda  0 y 180 derecha 
 		}
