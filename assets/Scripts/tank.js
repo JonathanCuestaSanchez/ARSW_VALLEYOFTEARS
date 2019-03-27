@@ -10,45 +10,75 @@ cc.Class({
         collisionrigh: false,
         collisionup: false,
         collisiondown: false,
+		bullet: {
+            default: null,
+            type: cc.Node, //o prefab
+        },
     },
     setRotate: function (flag) {
         var rotate;
+		
         if (this.direction == "up") {
             if (flag == "left") {
                 rotate = cc.rotateBy(0, 90);
+				this.rotationx=180;
+				this.rotationy=0;
             } else if (flag == "down") {
                 rotate = cc.rotateBy(0, 180);
+				this.rotationx=-90;
+				this.rotationy=0;
             } else {
                 rotate = cc.rotateBy(0, 270);
+				this.rotationx=0;
+				this.rotationy=270;
             }
 
 
         } else if (this.direction == "down") {
             if (flag == "right") {
                 rotate = cc.rotateBy(0, 90);
+				this.rotationx=0;
+				this.rotationy=0;
             } else if (flag == "up") {
                 rotate = cc.rotateBy(0, 180);
+				this.rotationx=0;
+				this.rotationy=-90;
             } else {
                 rotate = cc.rotateBy(0, 270);
+				this.rotationx=0;
+				this.rotationy=270;
             }
 
         }
         else if (this.direction == "left") {
             if (flag == "down") {
                 rotate = cc.rotateBy(0, 90);
+				this.rotationx=0;
+				this.rotationy=90;
             } else if (flag == "right") {
                 rotate = cc.rotateBy(0, 180);
+				this.rotationx=0;
+				this.rotationy=180;
             } else {
                 rotate = cc.rotateBy(0, 270);
+				this.rotationx=0;
+				this.rotationy=270;
+				
             }
 
         } else {
             if (flag == "up") {
                 rotate = cc.rotateBy(0, 90);
+				this.rotationx=0;
+				this.rotationy=90;
             } else if (flag == "left") {
                 rotate = cc.rotateBy(0, 180);
+				this.rotationx=0;
+				this.rotationy=180;
             } else {
                 rotate = cc.rotateBy(0, 270);
+				this.rotationx=0;
+				this.rotationy=270;
             }
 
         }
@@ -113,7 +143,20 @@ cc.Class({
 
                 }
                 break;
-
+				
+			case cc.macro.KEY.space:
+                var bullet = cc.instantiate(this.bullet);
+               
+				bullet.getComponent("Bullet").direccion = this.direction;
+				bullet.x = this.node.position.x;
+				bullet.y = this.node.position.y;
+				// bullet.getComponent("Bullet").posX = this.rotationx;
+				// bullet.getComponent("Bullet").posY = this.rotationy;
+				var scene = cc.find("Canvas");
+				scene.addChild(bullet);
+				bullet.active = true;
+				
+                break;
 
             default:
                 permit = false;
@@ -136,6 +179,8 @@ cc.Class({
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyEvent, this);
         cc.director.getCollisionManager().enabled = true;
         cc.director.getCollisionManager().enabledDebugDraw = false;
+		this.rotationx =0;
+		this.rotationy =90;
 
     },
     onEnable: function () {
@@ -214,6 +259,13 @@ cc.Class({
         }
         
     },
+	
+	shooTank:function(){
+		//tank center
+		this.MoveBullet= this.setMove();
+		Bullet.node.runAction(this.MoveBullet);
+	},
+	
     start() {
 
     },
