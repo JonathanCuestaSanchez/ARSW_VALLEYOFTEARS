@@ -10,6 +10,10 @@ cc.Class({
         collisionrigh: false,
         collisionup: false,
         collisiondown: false,
+		bullet: {
+            default: null,
+            type: cc.Node, //o prefab
+        },
     },
     setRotate: function (flag) {
         var rotate;
@@ -113,7 +117,10 @@ cc.Class({
 
                 }
                 break;
-
+				
+			case cc.macro.KEY.space:
+				console.log("key for shoot");
+                break;
 
             default:
                 permit = false;
@@ -214,6 +221,13 @@ cc.Class({
         }
         
     },
+	
+	shooTank:function(){
+		//tank center
+		this.MoveBullet= this.setMove();
+		Bullet.node.runAction(this.MoveBullet);
+	},
+	
     start() {
 
     },
