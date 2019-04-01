@@ -21,7 +21,13 @@ cc.Class({
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {},
+		// onLoad () {},
+		onCollisionEnter: function (other, self) {
+			
+					this.node.destroy();
+			
+
+		},
 
     update: function (dt) {
 			
