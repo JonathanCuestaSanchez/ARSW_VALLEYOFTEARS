@@ -16,14 +16,13 @@ cc.Class({
             default: null,
             type: cc.Node
         },
-        
         stompClient :null,
-        channel=null
+        channel:null,
     },
 
     // LIFE-CYCLE CALLBACKS:
 
-     connectAndSubscribe = function (channel) {
+     connectAndSubscribe : function (channel) {
         console.info('Connecting to WS...');
         var socket = new SockJS('/stompendpoint');
         stompClient = Stomp.over(socket);
@@ -45,11 +44,24 @@ cc.Class({
         });
 
     },
+    disconnect: function () {
+        if (this.stompClient !== null) {
+            this.stompClient.disconnect();
+        }
+        //setConnected(false);
+        console.log("Disconnected");
+    },
     
-    // onLoad () {},
-
+    onLoad () {
+       
+    },
+        
     start () {
-
+        var channel =1;
+        this.channel=channel;
+        this.disconnect();
+        //websocket connection
+        this.connectAndSubscribe(channel);
     },
     
     // update (dt) {},
