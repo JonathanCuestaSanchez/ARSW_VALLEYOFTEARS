@@ -7,6 +7,7 @@
 // Learn life-cycle callbacks:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] https://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
+import {getStomp} from './stomp';
 
 cc.Class({
     extends: cc.Component,
@@ -24,24 +25,19 @@ cc.Class({
 
      connectAndSubscribe : function (channel) {
         console.info('Connecting to WS...');
-        var socket = new SockJS('/stompendpoint');
-        stompClient = Stomp.over(socket);
+        //var socket = new SockJS('http://localhost:8080//stompendpoint');
+        //var socket = new SockJS('/stompendpoint');
+        var self=this;
         
-        //subscribe to /topic/TOPICXX when connections succeed
-        stompClient.connect({}, function (frame) {
-            console.log('Connected: ' + frame);
-            // 2 par el topico y lo que realizara al recibir un evento
-            stompClient.subscribe('/topic/newpoint.'+channel, function (eventbody) {
-                var pointReceived=JSON.parse(eventbody.body);
-                app.receivePoint(parseInt(pointReceived.x),parseInt(pointReceived.y));
+        getStomp()
+            .then((stpClient) => {
+                self.stompClient = stpClient;
+                subscribeTopic(self.stompClient, "/topic/conect" + self.channel, function(eventBody){
+                    console.log("asda");
+                    //var tank = JSON.parse(eventBody.body);
+                });
             });
-            stompClient.subscribe('/topic/newpolygon.'+channel, function (eventbody) {
-                var points=JSON.parse(eventbody.body);
-                //TODO DRAW POLYGON
-                app.drawPolygon(points);
-                
-            });
-        });
+
 
     },
     disconnect: function () {
