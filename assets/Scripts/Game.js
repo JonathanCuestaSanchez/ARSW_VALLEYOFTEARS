@@ -6,9 +6,7 @@
 //  - [English] http://docs.cocos2d-x.org/creator/manual/en/scripting/reference/attributes.html
 // Learn life-cycle callbacks:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] https://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
-import {getStomp} from './stomp';
-
+//  - [English] https://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html                
 cc.Class({
     extends: cc.Component,
 
@@ -17,48 +15,38 @@ cc.Class({
             default: null,
             type: cc.Node
         },
-        stompClient :null,
-        channel:null,
     },
 
     // LIFE-CYCLE CALLBACKS:
 
-     connectAndSubscribe : function (channel) {
+     connectAndSubscribe: function () {
         console.info('Connecting to WS...');
-        //var socket = new SockJS('http://localhost:8080//stompendpoint');
+        var socket = new SockJS('http://localhost:8080');
         //var socket = new SockJS('/stompendpoint');
-        var self=this;
+        stompClient = Stomp.over(socket);
         
-        getStomp()
-            .then((stpClient) => {
-                self.stompClient = stpClient;
-                subscribeTopic(self.stompClient, "/topic/conect" + self.channel, function(eventBody){
-                    console.log("asda");
-                    //var tank = JSON.parse(eventBody.body);
-                });
-            });
+   
+        
+            console.log('Connected: ');
+            
+            
+      
+
+    
 
 
-    },
-    disconnect: function () {
-        if (this.stompClient !== null) {
-            this.stompClient.disconnect();
-        }
-        //setConnected(false);
-        console.log("Disconnected");
+    },  
+    onLoad () {
+        this.stompClient=null;
+        this.connectAndSubscribe();
     },
     
-    onLoad () {
-       
-    },
         
-    start () {
-        var channel =1;
-        this.channel=channel;
-        this.disconnect();
+    //start () {
+        
+        
         //websocket connection
-        this.connectAndSubscribe(channel);
-    },
+        
     
     // update (dt) {},
 });
