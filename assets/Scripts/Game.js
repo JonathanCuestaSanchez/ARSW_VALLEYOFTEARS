@@ -21,9 +21,9 @@ cc.Class({
 
      connectAndSubscribe: function () {
         console.info('Connecting to WS...');
-        var socket = new SockJS('http://localhost:8080');
-        //var socket = new SockJS('/stompendpoint');
-        stompClient = Stomp.over(socket);
+        //var socket = new SockJS('http://localhost:8080');
+        var socket = new SockJS('/stompendpoint');
+        var stompClient = Stomp.over(socket);
         
    
         
