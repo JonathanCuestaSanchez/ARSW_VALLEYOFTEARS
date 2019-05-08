@@ -8740,6 +8740,8 @@
       "__id__": 272
     },
     "_enabled": true,
+    "id": 1,
+    "stompClient": null,
     "directionx": 100,
     "directiony": -300,
     "direction": "up",
@@ -8938,6 +8940,7 @@
     "tank": {
       "__id__": 272
     },
+    "channel": null,
     "_id": "50jGA0WWNO2bPA+O9xSLWy"
   }
 ]

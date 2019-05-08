@@ -1,7 +1,10 @@
+import { getStompClient, subscribeTopic, getStompClientsSize, unsubscribeTopic} from './aaaaa';
 cc.Class({
     extends: cc.Component,
 
     properties: {
+        id:1,
+        stompClient:null,
         directionx: 0,
         directiony: 0,
         direction: "up",
@@ -10,75 +13,75 @@ cc.Class({
         collisionrigh: false,
         collisionup: false,
         collisiondown: false,
-		bullet: {
+        bullet: {
             default: null,
             type: cc.Node, //o prefab
         },
     },
     setRotate: function (flag) {
         var rotate;
-		
+
         if (this.direction == "up") {
             if (flag == "left") {
                 rotate = cc.rotateBy(0, 90);
-				this.rotationx=180;
-				this.rotationy=0;
+                this.rotationx = 180;
+                this.rotationy = 0;
             } else if (flag == "down") {
                 rotate = cc.rotateBy(0, 180);
-				this.rotationx=-90;
-				this.rotationy=0;
+                this.rotationx = -90;
+                this.rotationy = 0;
             } else {
                 rotate = cc.rotateBy(0, 270);
-				this.rotationx=0;
-				this.rotationy=270;
+                this.rotationx = 0;
+                this.rotationy = 270;
             }
 
 
         } else if (this.direction == "down") {
             if (flag == "right") {
                 rotate = cc.rotateBy(0, 90);
-				this.rotationx=0;
-				this.rotationy=0;
+                this.rotationx = 0;
+                this.rotationy = 0;
             } else if (flag == "up") {
                 rotate = cc.rotateBy(0, 180);
-				this.rotationx=0;
-				this.rotationy=-90;
+                this.rotationx = 0;
+                this.rotationy = -90;
             } else {
                 rotate = cc.rotateBy(0, 270);
-				this.rotationx=0;
-				this.rotationy=270;
+                this.rotationx = 0;
+                this.rotationy = 270;
             }
 
         }
         else if (this.direction == "left") {
             if (flag == "down") {
                 rotate = cc.rotateBy(0, 90);
-				this.rotationx=0;
-				this.rotationy=90;
+                this.rotationx = 0;
+                this.rotationy = 90;
             } else if (flag == "right") {
                 rotate = cc.rotateBy(0, 180);
-				this.rotationx=0;
-				this.rotationy=180;
+                this.rotationx = 0;
+                this.rotationy = 180;
             } else {
                 rotate = cc.rotateBy(0, 270);
-				this.rotationx=0;
-				this.rotationy=270;
-				
+                this.rotationx = 0;
+                this.rotationy = 270;
+
             }
 
         } else {
             if (flag == "up") {
                 rotate = cc.rotateBy(0, 90);
-				this.rotationx=0;
-				this.rotationy=90;
+                this.rotationx = 0;
+                this.rotationy = 90;
             } else if (flag == "left") {
                 rotate = cc.rotateBy(0, 180);
-				this.rotationx=0;
-				this.rotationy=180;
+                this.rotationx = 0;
+                this.rotationy = 180;
             } else {
                 rotate = cc.rotateBy(0, 270);
-				this.rotationx=0;
-				this.rotationy=270;
+                this.rotationx = 0;
+                this.rotationy = 270;
             }
 
         }
@@ -92,7 +95,7 @@ cc.Class({
         var flag = this.direction;
         var permit = true;
 
-        
+
 
         switch (event.keyCode) {
             case cc.macro.KEY.a:
@@ -143,23 +146,25 @@ cc.Class({
 
                 }
                 break;
-				
-			case cc.macro.KEY.space:
+
+            case cc.macro.KEY.space:
                 var bullet = cc.instantiate(this.bullet);
-               
-				bullet.getComponent("Bullet").direccion = this.direction;
-				bullet.x = this.node.position.x;
-				bullet.y = this.node.position.y;
-				// bullet.getComponent("Bullet").posX = this.rotationx;
-				// bullet.getComponent("Bullet").posY = this.rotationy;
-				var scene = cc.find("Canvas");
-				scene.addChild(bullet);
-				bullet.active = true;
-				
+
+                bullet.getComponent("Bullet").direccion = this.direction;
+                bullet.x = this.node.position.x;
+                bullet.y = this.node.position.y;
+                // bullet.getComponent("Bullet").posX = this.rotationx;
+                // bullet.getComponent("Bullet").posY = this.rotationy;
+                var scene = cc.find("Canvas");
+                scene.addChild(bullet);
+                bullet.active = true;
+
                 break;
 
             default:
                 permit = false;
+
+                
 
         }
 
@@ -167,20 +172,28 @@ cc.Class({
             this.Dir = this.setRotate(flag);
             this.node.runAction(this.setRotate(flag));
         }
+        this.stompClient.send('/app/room-movement', {}, JSON.stringify({
+            id: this.id,
+            positiony: this.node.y,
+            positionx: this.node.x,
+            rotation: this.direction
+        }));
+        console.log("manda");
 
 
     },
 
 
     onLoad: function () {
+        this.connectAndSubscribe();
         cc.audioEngine.stopAll();
         //this.Move = this.setMove();
         //this.node.runAction(this.Move)
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyEvent, this);
         cc.director.getCollisionManager().enabled = true;
         cc.director.getCollisionManager().enabledDebugDraw = false;
-		this.rotationx =0;
-		this.rotationy =90;
+        this.rotationx = 0;
+        this.rotationy = 90;
 
     },
     onEnable: function () {
@@ -193,46 +206,46 @@ cc.Class({
         cc.director.getCollisionManager().enabledDebugDraw = false;
     },
     onCollisionEnter: function (other, self) {
-        
-        
+
+
         var otherAabb = other.world.aabb;
         var otherPreAabb = other.world.preAabb.clone();
         var selfAabb = self.world.aabb;
         var selfPreAabb = self.world.preAabb.clone();
-        
-        
-        if (selfAabb.center.x-otherAabb.center.x<0 && Math.abs(selfAabb.center.y - otherAabb.center.y)<50) {
+
+
+        if (selfAabb.center.x - otherAabb.center.x < 0 && Math.abs(selfAabb.center.y - otherAabb.center.y) < 50) {
 
             this.collisionrigh = true;
             other.touchingX = false;
-            other.touchingY =false;
+            other.touchingY = false;
 
         }
 
 
-        if (Math.abs(selfAabb.center.y - otherAabb.center.y)<50 && selfAabb.center.x-otherAabb.center.x>0 ) {
+        if (Math.abs(selfAabb.center.y - otherAabb.center.y) < 50 && selfAabb.center.x - otherAabb.center.x > 0) {
             this.collisionleft = true;
             other.touchingX = true;
-            other.touchingY =false;
+            other.touchingY = false;
         }
 
 
-        if (selfAabb.center.y - otherAabb.center.y<0 && Math.abs(selfAabb.center.x - otherAabb.center.x)<50) {
+        if (selfAabb.center.y - otherAabb.center.y < 0 && Math.abs(selfAabb.center.x - otherAabb.center.x) < 50) {
 
             this.collisionup = true;
             other.touchingX = false;
-            other.touchingY =true;
+            other.touchingY = true;
 
         }
-        if (Math.abs(selfAabb.center.x - otherAabb.center.x)<50 && selfAabb.center.y - otherAabb.center.y>0) {
+        if (Math.abs(selfAabb.center.x - otherAabb.center.x) < 50 && selfAabb.center.y - otherAabb.center.y > 0) {
 
 
             this.collisiondown = true;
             other.touchingX = true;
-            other.touchingY =true;
+            other.touchingY = true;
         }
-        
-        
+
+
 
 
     },
@@ -242,32 +255,47 @@ cc.Class({
 
         if (other.touchingX && other.touchingY) {
             other.touchingX = null;
-            other.touchingY =null;
+            other.touchingY = null;
             this.collisiondown = false;
-        }else if(!other.touchingX && other.touchingY){
+        } else if (!other.touchingX && other.touchingY) {
             other.touchingX = null;
-            other.touchingY =null;
+            other.touchingY = null;
             this.collisionup = false
-        }else if(other.touchingX && !other.touchingY){
+        } else if (other.touchingX && !other.touchingY) {
             other.touchingX = null;
-            other.touchingY =null;
+            other.touchingY = null;
             this.collisionleft = false;
-        }else if(!other.touchingX && !other.touchingY){
+        } else if (!other.touchingX && !other.touchingY) {
             other.touchingX = null;
-            other.touchingY =null;
+            other.touchingY = null;
             this.collisionrigh = false;
         }
-        
+
     },
-	
-	shooTank:function(){
-		//tank center
-		this.MoveBullet= this.setMove();
-		Bullet.node.runAction(this.MoveBullet);
-	},
-	
+
+    shooTank: function () {
+        //tank center
+        this.MoveBullet = this.setMove();
+        Bullet.node.runAction(this.MoveBullet);
+    },
+
     start() {
 
+    },
+    connectAndSubscribe: function () {
+        var self= this;
+        getStompClient()
+			.then((stpClient) => {
+				self.stompClient = stpClient;
+				subscribeTopic(self.stompClient, "/topic/room-movement" , function(eventBody){
+                    
+                    var move = JSON.parse(eventBody.body);		
+                    	
+					
+					
+					
+                });
+            });
     },
 
     //update (dt) {
