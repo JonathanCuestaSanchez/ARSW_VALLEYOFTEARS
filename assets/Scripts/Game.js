@@ -15,6 +15,7 @@ cc.Class({
             default: null,
             type: cc.Node
         },
+        channel:null
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -24,7 +25,15 @@ cc.Class({
         //var socket = new SockJS('http://localhost:8080');
         var socket = new SockJS('/stompendpoint');
         var stompClient = Stomp.over(socket);
-        
+        stompClient.connect({},
+            function(){
+                self.channel=1;
+                console.log('Connected: ' + self.channel);
+                stompClient.subscribe('/topic/newtank.'+channel, function (eventbody) {
+                    var pointReceived=JSON.parse(eventbody.body);
+                });
+            }
+            );
    
         
             console.log('Connected: ');
