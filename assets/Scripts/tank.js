@@ -1,10 +1,12 @@
-import { getStompClient, subscribeTopic, getStompClientsSize, unsubscribeTopic} from './aaaaa';
+import { getStompClient, subscribeTopic, getStompClientsSize, unsubscribeTopic } from './aaaaa';
+import { getRoomPlayers, joinRoom, createRoom } from './Rest.js';
 cc.Class({
     extends: cc.Component,
 
     properties: {
-        id:1,
-        stompClient:null,
+        pos: null,
+        id: null,
+        stompClient: null,
         directionx: 0,
         directiony: 0,
         direction: "up",
@@ -16,6 +18,18 @@ cc.Class({
         bullet: {
             default: null,
             type: cc.Node, //o prefab
+        },
+        loadedPlayers: {
+            default: [],
+            type: [cc.Node],
+        },
+        player: {
+            default: null,
+            type: cc.Node,
+        },
+        enem:{
+			default:null,
+			type: cc.Node,
         },
     },
     setRotate: function (flag) {
@@ -164,7 +178,7 @@ cc.Class({
             default:
                 permit = false;
 
-                
+
 
         }
 
@@ -185,6 +199,10 @@ cc.Class({
 
 
     onLoad: function () {
+        this.room = cc.find("form").getComponent("Menu").room;
+        this.username = cc.find("form").getComponent("Menu").username;
+			this.id = cc.find("form").getComponent("Menu").id;
+        this.players = null;
         this.connectAndSubscribe();
         cc.audioEngine.stopAll();
         //this.Move = this.setMove();
@@ -194,6 +212,7 @@ cc.Class({
         cc.director.getCollisionManager().enabledDebugDraw = false;
         this.rotationx = 0;
         this.rotationy = 90;
+        this.loadAllPlayers();
 
     },
     onEnable: function () {
@@ -283,20 +302,93 @@ cc.Class({
 
     },
     connectAndSubscribe: function () {
-        var self= this;
+        var self = this;
         getStompClient()
-			.then((stpClient) => {
-				self.stompClient = stpClient;
-				subscribeTopic(self.stompClient, "/topic/room-movement" , function(eventBody){
-                    
-                    var move = JSON.parse(eventBody.body);		
-                    	
-					
-					
-					
+            .then((stpClient) => {
+                self.stompClient = stpClient;
+                subscribeTopic(self.stompClient, "/topic/room-movement", function (eventBody) {
+
+                    var move = JSON.parse(eventBody.body);
+
+
+
+
                 });
             });
     },
+    loadAllPlayers: function(){
+		var self = this;
+		var callback = {
+			onSuccess: function(response){
+				
+				var cont = 2;
+				response.data.forEach(
+					function(player){
+						if(player.id != self.id){							
+                            var plr = cc.instantiate(self.enem);                            
+                            self.loadedPlayers.push(plr);
+                            if(player.pos==0){
+                                plr.x=100;
+                                plr.y=-300;
+                            }	
+                            if(player.pos==1){
+                                plr.node.x=-100;
+                                plr.node.y=300;
+                            }	
+                            if(player.pos==2){
+                                plr.x=450;
+                                plr.y=100;
+                            }	
+                            if(player.pos==3){
+                                plr.x=-450;
+                                plr.y=-100;
+                            }						
+							cont++;
+							var scene= cc.find("Canvas");
+							scene.addChild(plr);
+							plr.active = true;							
+							self.leftPlayersLabel.string = self.loadedPlayers.length;
+						}else{
+                            this.pos=player.pos;
+                            if(player.pos==0){
+                                this.node.x=100;
+                                this.node.y=-300;
+                            }	
+                            if(player.pos==1){
+                                this.node.x=-100;
+                                this.node.y=300;
+                            }	
+                            if(player.pos==2){
+                                this.node.x=450;
+                                this.node.y=100;
+                            }	
+                            if(player.pos==3){
+                                this.node.x=-450;
+                                this.node.y=-100;
+                            }	
+                        }
+						
+					}
+				);
+				
+			},
+			onFailed: function(error){
+				console.log(error);
+			}
+			
+		};
+		getRoomPlayers(self.room, callback);
+	},
+
+
+
+
+
+
+
+
+
+   
 
     //update (dt) {
 

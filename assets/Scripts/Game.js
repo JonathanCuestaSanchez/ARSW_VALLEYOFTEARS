@@ -15,7 +15,8 @@ cc.Class({
             default: null,
             type: cc.Node
         },
-        channel:null
+        channel:null,
+        stompClient:null,
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -24,7 +25,7 @@ cc.Class({
         console.info('Connecting to WS...');
         //var socket = new SockJS('http://localhost:8080');
         var socket = new SockJS('/stompendpoint');
-        var stompClient = Stomp.over(socket);
+        this.stompClient = Stomp.over(socket);
         stompClient.connect({},
             function(){
                 self.channel=1;
@@ -33,17 +34,8 @@ cc.Class({
                     var pointReceived=JSON.parse(eventbody.body);
                 });
             }
-            );
-   
-        
-            console.log('Connected: ');
-            
-            
-      
-
-    
-
-
+            );       
+            console.log('Connected: ');z
     },  
     onLoad () {
         this.stompClient=null;
