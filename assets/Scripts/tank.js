@@ -194,7 +194,8 @@ cc.Class({
             id: this.id,
             positiony: this.node.y,
             positionx: this.node.x,
-            rotation: this.direction
+            rotation: this.direction,
+            pos: this.pos
         }));
 
 
@@ -217,12 +218,14 @@ cc.Class({
         cc.director.getCollisionManager().enabled = true;
         cc.director.getCollisionManager().enabledDebugDraw = false;
         this.rotationx = 0;
-        this.rotationy = 90;
-
+        this.rotationy = 90; 
+        this.pos = getStompClientsSize();
+        this.setstart();
         this.loadAllPlayers();
 
 
     },
+    
     onEnable: function () {
         cc.director.getCollisionManager().enabled = true;
         cc.director.getCollisionManager().enabledDebugDraw = false;
@@ -318,21 +321,47 @@ cc.Class({
                 subscribeTopic(self.stompClient, "/topic/room-movement", function (eventBody) {
 
                     var move = JSON.parse(eventBody.body);
-
+                    self.loadedPlayers.forEach(
+						function(player){
+							if(move.id == player.id && player.id != self.id){
+								
+								player.position = move.position;
+								player.rotation = move.rotation;
+							}
+						}
+					);
 
 
 
                 });
             });
+        
+        
+    },
+    setstart: function() {
+        var self = this;
+        if (this.pos==0){
+            self.node.x ,self.directionx= 100;
+            self.node.y ,self.directiony= -300;
+        } else if(this.pos==1){
+            self.node.x ,self.directionx= -100;
+            self.node.y ,self.directiony= 300;
+        } else if (this.pos==2){
+            self.node.x ,self.directionx= 450;
+            self.node.y ,self.directiony= 100;
+        } else if (this.pos==3){
+            self.node.x ,self.directionx= -450;
+            self.node.y ,self.directiony= -100;
+        }
     },
     loadAllPlayers: function () {
         var self = this;
         var callback = {
             onSuccess: function (response) {
-
                 var cont = 2;
                 response.data.forEach(
                     function (player) {
+                        
                         if (player.id != self.id) {
                             var plr = cc.instantiate(self.enem);
                             self.loadedPlayers.push(plr);
@@ -356,24 +385,25 @@ cc.Class({
                             var scene = cc.find("Canvas");
                             scene.addChild(plr);
                             plr.active = true;
-                            self.leftPlayersLabel.string = self.loadedPlayers.length;
+                            //self.leftPlayersLabel.string = self.loadedPlayers.length;
                         } else {
-                            this.pos = player.pos;
+                           
+                            self.pos = player.pos;
                             if (player.pos == 0) {
-                                this.node.x = 100;
-                                this.node.y = -300;
+                                self.node.x = 100;
+                                self.node.y = -300;
                             }
                             if (player.pos == 1) {
-                                this.node.x = -100;
-                                this.node.y = 300;
+                                self.node.x = -100;
+                                self.node.y = 300;
                             }
                             if (player.pos == 2) {
-                                this.node.x = 450;
-                                this.node.y = 100;
+                                self.node.x = 450;
+                                self.node.y = 100;
                             }
                             if (player.pos == 3) {
-                                this.node.x = -450;
-                                this.node.y = -100;
+                                self.node.x = -450;
+                                self.node.y = -100;
                             }
                         }
 

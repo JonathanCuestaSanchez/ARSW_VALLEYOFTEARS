@@ -132,7 +132,7 @@ var menu = cc.Class({
 	},
 	
 	setRoom: function(event, roomId){
-		console.log(roomId);
+		//console.log(roomId);
 		this.room = roomId;
 	}
 
