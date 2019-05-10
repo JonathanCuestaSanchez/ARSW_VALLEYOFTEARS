@@ -219,8 +219,9 @@ cc.Class({
         cc.director.getCollisionManager().enabledDebugDraw = false;
         this.rotationx = 0;
         this.rotationy = 90; 
-        this.pos = getStompClientsSize();
-        this.setstart();
+        //this.pos = getStompClientsSize();
+          
+        
         this.loadAllPlayers();
 
 
@@ -323,6 +324,7 @@ cc.Class({
                     var move = JSON.parse(eventBody.body);
                     self.loadedPlayers.forEach(
 						function(player){
+                            console.log("entra")
 							if(move.id == player.id && player.id != self.id){
 								
 								player.position = move.position;
@@ -340,16 +342,16 @@ cc.Class({
     },
     setstart: function() {
         var self = this;
-        if (this.pos==0){
+        if (self.pos==0){
             self.node.x ,self.directionx= 100;
             self.node.y ,self.directiony= -300;
-        } else if(this.pos==1){
+        } else if(self.pos==1){
             self.node.x ,self.directionx= -100;
             self.node.y ,self.directiony= 300;
-        } else if (this.pos==2){
+        } else if (self.pos==2){
             self.node.x ,self.directionx= 450;
             self.node.y ,self.directiony= 100;
-        } else if (this.pos==3){
+        } else if (self.pos==3){
             self.node.x ,self.directionx= -450;
             self.node.y ,self.directiony= -100;
         }
@@ -409,6 +411,8 @@ cc.Class({
 
                     }
                 );
+                self.setstart();
+               
 
             },
             onFailed: function (error) {

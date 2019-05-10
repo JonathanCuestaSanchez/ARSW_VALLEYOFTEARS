@@ -6,6 +6,7 @@ export function getRoomPlayers(roomId, callback){
 	.catch(function(error){
 		callback.onFailed(error);
 	});
+	
 };
 
 export function joinRoom(playerId, xPosition, yPosition, roomId, callback){
