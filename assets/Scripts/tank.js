@@ -3,7 +3,7 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        id:1,
+        id:null,
         stompClient:null,
         directionx: 0,
         directiony: 0,
@@ -16,6 +16,14 @@ cc.Class({
         bullet: {
             default: null,
             type: cc.Node, //o prefab
+        },
+        Players: {
+            default : [],
+            type: [cc.Node],
+        },
+        enemy:{
+			default:null,
+			type: cc.Node,
         },
     },
     setRotate: function (flag) {
@@ -178,13 +186,14 @@ cc.Class({
             positionx: this.node.x,
             rotation: this.direction
         }));
-        console.log("manda");
+        
 
 
     },
 
 
     onLoad: function () {
+        
         this.connectAndSubscribe();
         cc.audioEngine.stopAll();
         //this.Move = this.setMove();
@@ -194,6 +203,8 @@ cc.Class({
         cc.director.getCollisionManager().enabledDebugDraw = false;
         this.rotationx = 0;
         this.rotationy = 90;
+        this.id=Math.floor(Math.random()*10000000);
+        this.loadPlayers();
 
     },
     onEnable: function () {
@@ -289,15 +300,52 @@ cc.Class({
 				self.stompClient = stpClient;
 				subscribeTopic(self.stompClient, "/topic/room-movement" , function(eventBody){
                     
-                    var move = JSON.parse(eventBody.body);		
-                    	
-					
-					
+                    var move = JSON.parse(eventBody.body);
+                    self.Players.forEach(
+						function(player){
+							if(move.id == player.id && player.id != self.id){
+								
+								player.position = move.position;
+								player.rotation = move.rotation;
+							}
+						}
+					);
 					
                 });
             });
     },
-
+    loadPlayers(){
+        var self =this;
+        console.log("entra :)");
+        var callback = {
+            
+			onSuccess: function(response){
+                console.log("entra x2");
+                response.data.forEach(
+					function(player){
+						if(player.id != self.id){
+							
+							var plr = cc.instantiate(self.enemy);
+							self.Players.push(plr);
+							
+							plr.x = player.x;
+							plr.y = player.y;
+							plr.id = player.id;
+							
+							cont++;
+							var scene= cc.find("root");
+							scene.addChild(plr);
+							console.log("si carga plaayers");
+						}
+						
+					}
+				);
+            },
+            onFailed: function(error){
+				console.log(error);
+			}
+    };
+    }
     //update (dt) {
 
     //},

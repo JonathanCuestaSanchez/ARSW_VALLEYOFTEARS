@@ -11,6 +11,10 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
+        item:{
+            default:null,
+            type: cc.Node,
+        },
         tank: {
             default: null,
             type: cc.Node
@@ -21,14 +25,14 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
      connectAndSubscribe: function () {
-        console.info('Connecting to WS...');
+       
         //var socket = new SockJS('http://localhost:8080');
         var socket = new SockJS('/stompendpoint');
         var stompClient = Stomp.over(socket);
         stompClient.connect({},
             function(){
                 self.channel=1;
-                console.log('Connected: ' + self.channel);
+                
                 stompClient.subscribe('/topic/newtank.'+channel, function (eventbody) {
                     var pointReceived=JSON.parse(eventbody.body);
                 });
@@ -36,7 +40,7 @@ cc.Class({
             );
    
         
-            console.log('Connected: ');
+          
             
             
       
