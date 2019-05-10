@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
+      "x": 0.5631414473684211,
+      "y": 0.5631414473684211,
       "z": 1
     },
     "_quat": {
@@ -8743,6 +8743,7 @@
       "__id__": 272
     },
     "_enabled": true,
+    "pos": null,
     "id": 1,
     "stompClient": null,
     "directionx": 100,
