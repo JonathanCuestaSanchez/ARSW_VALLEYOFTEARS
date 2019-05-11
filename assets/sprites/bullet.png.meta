@@ -6,7 +6,7 @@
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
   "subMetas": {
-    "bullet": {
+    "Bullet": {
       "ver": "1.0.3",
       "uuid": "530dcf82-79c9-490b-a8ac-1e2b4f3d0e27",
       "rawTextureUuid": "bdf304de-8431-465e-be92-4d02e7472b30",
