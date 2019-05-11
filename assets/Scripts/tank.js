@@ -158,7 +158,7 @@ cc.Class({
 
                     this.directiony -= 50;
 
-                    this.direction = "down";
+                    this.rota = "down";
                     this.node.runAction(cc.moveBy(0.4, 0, -50));
 
 
@@ -324,11 +324,13 @@ cc.Class({
                     var move = JSON.parse(eventBody.body);
                     self.loadedPlayers.forEach(
 						function(player){
-                            console.log("entra")
 							if(move.id == player.id && player.id != self.id){
-								
-								player.position = move.position;
-								player.rotation = move.rotation;
+                                console.log("si entra a revisar");
+                                console.log(player);
+                                console.log(move);
+								player.x = move.directionx;
+                                player.y = move.directiony;
+                                player.direction=move.rotation;
 							}
 						}
 					);
@@ -367,13 +369,14 @@ cc.Class({
                         if (player.id != self.id) {
                             var plr = cc.instantiate(self.enem);
                             self.loadedPlayers.push(plr);
+                            plr.id=player.id;
                             if (player.pos == 0) {
                                 plr.x = 100;
                                 plr.y = -300;
                             }
                             if (player.pos == 1) {
-                                plr.node.x = -100;
-                                plr.node.y = 300;
+                                plr.x = -100;
+                                plr.y = 300;
                             }
                             if (player.pos == 2) {
                                 plr.x = 450;
