@@ -31,7 +31,6 @@ cc.Class({
             type: cc.Node,
         },
         enem: {
-
             default: null,
             type: cc.Node,
         },
@@ -117,40 +116,47 @@ cc.Class({
 
         switch (event.keyCode) {
             case cc.macro.KEY.a:
-                this.direction = "left";
+                this.direction = "a";
+                this.movimientoEnemy("left");
                 break;
             case cc.macro.KEY.left:
                 if ((this.directionx - 50) > -451 && !this.collisionleft) {
                     this.directionx -= 50;
                     this.direction = "left";
                     this.node.runAction(cc.moveBy(0.4, -50, 0));
+                    this.movimientoEnemy("left");
                 }
 
                 break;
 
             case cc.macro.KEY.d:
                 this.direction = "right";
+                this.movimientoEnemy("d");
                 break;
             case cc.macro.KEY.right:
                 if ((this.directionx + 50) < 451 && !this.collisionrigh) {
                     this.directionx += 50;
                     this.direction = "right";
                     this.node.runAction(cc.moveBy(0.4, 50, 0));
+                    this.movimientoEnemy("right");
                 }
                 break;
 
             case cc.macro.KEY.w:
                 this.direction = "up";
+                this.movimientoEnemy("w");
                 break;
             case cc.macro.KEY.up:
                 if ((this.directiony + 50) < 301 && !this.collisionup) {
                     this.directiony += 50;
                     this.direction = "up";
                     this.node.runAction(cc.moveBy(0.4, 0, 50));
+                    this.movimientoEnemy("up");
                 }
                 break;
             case cc.macro.KEY.s:
                 this.direction = "down";
+                this.movimientoEnemy("s");
                 break;
             case cc.macro.KEY.down:
 
@@ -160,6 +166,7 @@ cc.Class({
 
                     this.rota = "down";
                     this.node.runAction(cc.moveBy(0.4, 0, -50));
+                    this.movimientoEnemy("down");
 
 
                 }
@@ -190,15 +197,15 @@ cc.Class({
             this.Dir = this.setRotate(flag);
             this.node.runAction(this.setRotate(flag));
         }
+
+
+
+    },
+    movimientoEnemy: function (tecla) {
         this.stompClient.send('/app/room-movement', {}, JSON.stringify({
             id: this.id,
-            positiony: this.node.y,
-            positionx: this.node.x,
-            rotation: this.direction,
-            pos: this.pos
+            tecla: tecla,
         }));
-
-
 
     },
 
@@ -218,15 +225,15 @@ cc.Class({
         cc.director.getCollisionManager().enabled = true;
         cc.director.getCollisionManager().enabledDebugDraw = false;
         this.rotationx = 0;
-        this.rotationy = 90; 
+        this.rotationy = 90;
         //this.pos = getStompClientsSize();
-          
-        
+
+
         this.loadAllPlayers();
 
 
     },
-    
+
     onEnable: function () {
         cc.director.getCollisionManager().enabled = true;
         cc.director.getCollisionManager().enabledDebugDraw = false;
@@ -323,39 +330,87 @@ cc.Class({
 
                     var move = JSON.parse(eventBody.body);
                     self.loadedPlayers.forEach(
-						function(player){
-							if(move.id == player.id && player.id != self.id){
+                        function (player) {
+                            if (move.id == player.id && player.id != self.id) {
                                 console.log("si entra a revisar");
-                                console.log( move.positionx);
-                                console.log(move);
-								player.x = move.positionx;
-                                player.y = move.positiony;
-                                player.direction=move.rotation;
-							}
-						}
-					);
+                                
+                                console.log(player);
+                                self.moveEnemi(player,move.tecla);
+                            }
+                        }
+                    );
 
 
 
                 });
             });
-        
-        
+
+
     },
-    setstart: function() {
+    moveEnemi: function (Player, direction) {
+        switch (direction) {
+            case "a":
+                Player.direction = "left";
+                break;
+            case "left":
+                if ((Player.directionx - 50) > -451 ) {
+                    Player.directionx -= 50;
+                    Player.direction = "left";
+                    Player.runAction(cc.moveBy(0.4, -50, 0));
+                }
+
+                break;
+
+            case "d":
+                Player.direction = "right";
+                break;
+            case "right":
+                if ((Player.directionx + 50) < 451 ) {
+                    Player.directionx += 50;
+                    Player.direction = "right";
+                    Player.runAction(cc.moveBy(0.4, 50, 0));
+                }
+                break;
+
+            case "w":
+                Player.direction = "up";
+                break;
+            case "up":
+                if ((Player.directiony + 50) < 301 ) {
+                    Player.directiony += 50;
+                    Player.direction = "up";
+                    Player.runAction(cc.moveBy(0.4, 0, 50));
+                }
+                break;
+            case "s":
+                Player.direction = "down";
+                break;
+            case "down":
+
+                if ((Player.directiony - 50) > -301 ) {
+
+                    Player.directiony -= 50;
+                   
+                    Player.runAction(cc.moveBy(0.4, 0, -50));
+
+
+                }
+        }
+    },
+    setstart: function () {
         var self = this;
-        if (self.pos==0){
-            self.node.x ,self.directionx= 100;
-            self.node.y ,self.directiony= -300;
-        } else if(self.pos==1){
-            self.node.x ,self.directionx= -100;
-            self.node.y ,self.directiony= 300;
-        } else if (self.pos==2){
-            self.node.x ,self.directionx= 450;
-            self.node.y ,self.directiony= 100;
-        } else if (self.pos==3){
-            self.node.x ,self.directionx= -450;
-            self.node.y ,self.directiony= -100;
+        if (self.pos == 0) {
+            self.node.x, self.directionx = 100;
+            self.node.y, self.directiony = -300;
+        } else if (self.pos == 1) {
+            self.node.x, self.directionx = -100;
+            self.node.y, self.directiony = 300;
+        } else if (self.pos == 2) {
+            self.node.x, self.directionx = 450;
+            self.node.y, self.directiony = 100;
+        } else if (self.pos == 3) {
+            self.node.x, self.directionx = -450;
+            self.node.y, self.directiony = -100;
         }
     },
     loadAllPlayers: function () {
@@ -365,26 +420,34 @@ cc.Class({
                 var cont = 2;
                 response.data.forEach(
                     function (player) {
-                        
+
                         if (player.id != self.id) {
                             var plr = cc.instantiate(self.enem);
                             self.loadedPlayers.push(plr);
-                            plr.id=player.id;
+                            plr.id = player.id;
                             if (player.pos == 0) {
                                 plr.x = 100;
                                 plr.y = -300;
+                                plr.directionx = 100;
+                                plr.directiony = -300;
                             }
                             if (player.pos == 1) {
                                 plr.x = -100;
                                 plr.y = 300;
+                                plr.directionx = -100;
+                                plr.directiony = 300;
                             }
                             if (player.pos == 2) {
                                 plr.x = 450;
                                 plr.y = 100;
+                                plr.directionx = 450;
+                                plr.directiony = 100;
                             }
                             if (player.pos == 3) {
                                 plr.x = -450;
                                 plr.y = -100;
+                                plr.directionx = -450;
+                                plr.directiony = -100;
                             }
                             cont++;
                             var scene = cc.find("Canvas");
@@ -392,7 +455,7 @@ cc.Class({
                             plr.active = true;
                             //self.leftPlayersLabel.string = self.loadedPlayers.length;
                         } else {
-                           
+
                             self.pos = player.pos;
                             if (player.pos == 0) {
                                 self.node.x = 100;
@@ -415,7 +478,7 @@ cc.Class({
                     }
                 );
                 self.setstart();
-               
+
 
             },
             onFailed: function (error) {
