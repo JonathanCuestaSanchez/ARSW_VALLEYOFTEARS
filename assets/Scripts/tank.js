@@ -326,10 +326,10 @@ cc.Class({
 						function(player){
 							if(move.id == player.id && player.id != self.id){
                                 console.log("si entra a revisar");
-                                console.log(player);
+                                console.log( move.positionx);
                                 console.log(move);
-								player.x = move.directionx;
-                                player.y = move.directiony;
+								player.x = move.positionx;
+                                player.y = move.positiony;
                                 player.direction=move.rotation;
 							}
 						}
