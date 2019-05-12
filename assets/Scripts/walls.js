@@ -30,6 +30,7 @@ cc.Class({
     },
     golpe: function () {
         
+		
         if (this.life == 0) {
             this.stompClient.send('/app/wall/' + this.room, {}, JSON.stringify({
                 id: this.id               
