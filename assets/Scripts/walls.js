@@ -28,10 +28,9 @@ cc.Class({
     onCollisionExit: function (other) {
 
     },
-    golpe: function () {
-        
+    golpe: function () {        
         if (this.life == 0) {
-            this.stompClient.send('/app/wall/' + this.room, {}, JSON.stringify({
+            this.stompClient.send('/app/wall/' + this.room+"/"+this.id, {}, JSON.stringify({
                 id: this.id               
             }));
             this.node.destroy();
@@ -43,10 +42,11 @@ cc.Class({
         getStompClient()
             .then((stpClient) => {
                 self.stompClient = stpClient;
-                subscribeTopic(self.stompClient, "/topic/walls-" + self.room, function (eventBody) {
+                console.
+                subscribeTopic(self.stompClient, "/topic/walls/" + self.room+"/"+self.id, function (eventBody) {
                     var walls = JSON.parse(eventBody.body);
                     if (walls.id==self.id){
-                        self.node.destroy();   
+                        self.node.destroy();
                     }
                     
                 
@@ -58,7 +58,7 @@ cc.Class({
 
     
     start() {
-
+        
     },
 
     update(dt) {
