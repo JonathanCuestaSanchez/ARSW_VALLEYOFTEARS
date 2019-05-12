@@ -1,19 +1,18 @@
-// Learn cc.Class:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/class.html
-//  - [English] http://docs.cocos2d-x.org/creator/manual/en/scripting/class.html
-// Learn Attribute:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
-//  - [English] http://docs.cocos2d-x.org/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] https://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
+import { getStompClient, subscribeTopic, getStompClientsSize, unsubscribeTopic } from './aaaaa';
 
 cc.Class({
     extends: cc.Component,
 
     properties: {
         life: 0,
+        id: 0,
+        stompClient:null
     },
+    onLoad: function () {
+        this.room = cc.find("form").getComponent("Menu").room;
+        this.connectAndSubscribe();
+    },
+
     onCollisionEnter: function (other, self) {
 
         if (other.node.name == "bullet") {
@@ -32,14 +31,32 @@ cc.Class({
     golpe: function () {
         
         if (this.life == 0) {
+            this.stompClient.send('/app/wall/' + this.room, {}, JSON.stringify({
+                id: this.id               
+            }));
             this.node.destroy();
         }
     },
 
-    // LIFE-CYCLE CALLBACKS:
+    connectAndSubscribe: function () {
+        var self = this;
+        getStompClient()
+            .then((stpClient) => {
+                self.stompClient = stpClient;
+                subscribeTopic(self.stompClient, "/topic/walls-" + self.room, function (eventBody) {
+                    var walls = JSON.parse(eventBody.body);
+                    if (walls.id==self.id){
+                        self.node.destroy();   
+                    }
+                    
+                
+                });
+            });
+        
 
-    // onLoad () {},
+    },
 
+    
     start() {
 
     },
