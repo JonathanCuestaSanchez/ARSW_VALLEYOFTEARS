@@ -10,7 +10,7 @@ cc.Class({
     },
     onLoad: function () {
         this.room = cc.find("form").getComponent("Menu").room;
-        this.connectAndSubscribe();
+        //this.connectAndSubscribe();
     },
 
     onCollisionEnter: function (other, self) {

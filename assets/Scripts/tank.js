@@ -4,7 +4,7 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-       
+
         pos: null,
         id: null,
         stompClient: null,
@@ -107,13 +107,12 @@ cc.Class({
     },
     setRotateEne: function (Player,flag) {
         var rotate;
-        console.log(Player.direction,flag);
+        
         if (Player.direction == "up") {
             if (flag == "left") {
                 rotate = cc.rotateBy(0, 90);
                 
             } else if (flag == "down") {
-                
                 rotate = cc.rotateBy(0, 180);
                
             } else {
@@ -259,7 +258,7 @@ cc.Class({
 
     },
     movimientoEnemy: function (tecla) {
-        this.stompClient.send('/app/movement/'+this.room, {}, JSON.stringify({
+        this.stompClient.send('/app/room-movement', {}, JSON.stringify({
             id: this.id,
             tecla: tecla,
         }));
@@ -383,7 +382,7 @@ cc.Class({
 
             .then((stpClient) => {
                 self.stompClient = stpClient;
-                subscribeTopic(self.stompClient, "/topic/room-movement-"+self.room, function (eventBody) {
+                subscribeTopic(self.stompClient, "/topic/room-movement", function (eventBody) {
 
                     var move = JSON.parse(eventBody.body);
                     self.loadedPlayers.forEach(
@@ -447,7 +446,6 @@ cc.Class({
             case "down":
                 if ((Player.directiony - 50) > -301 ) {          
                     Player.directiony -= 50;
-                    Player.direction="down"
                     Player.runAction(cc.moveBy(0.4, 0, -50));
                 }
             default:
@@ -470,12 +468,21 @@ cc.Class({
         } else if (self.pos == 1) {
             self.node.x, self.directionx = -100;
             self.node.y, self.directiony = 300;
+            self.direction="down";
+            this.Dir = this.setRotate("up");
+            this.node.runAction(this.setRotate("up"));
         } else if (self.pos == 2) {
             self.node.x, self.directionx = 450;
             self.node.y, self.directiony = 100;
+            self.direction="left";
+            this.Dir = this.setRotate("up");
+            this.node.runAction(this.setRotate("up"));
         } else if (self.pos == 3) {
             self.node.x, self.directionx = -450;
             self.node.y, self.directiony = -100;
+            self.direction="right";
+            this.Dir = this.setRotate("up");
+            this.node.runAction(this.setRotate("up"));
         }
     },
     loadAllPlayers: function () {
@@ -501,6 +508,10 @@ cc.Class({
                                 plr.y = 300;
                                 plr.directionx = -100;
                                 plr.directiony = 300;
+                                //plr.direction = "down";
+                                //plr.Dir = self.setRotateEne(plr,"up");
+                                //plr.runAction(self.setRotateEne(plr,"up"));
+
                             }
                             if (player.pos == 2) {
                                 plr.x = 450;
