@@ -484,6 +484,7 @@ cc.Class({
                 if ((Player.directiony - 50) > -301 ) {          
                     Player.directiony -= 50;
                     Player.runAction(cc.moveBy(0.4, 0, -50));
+                    Player.direction = "down";
                 }
             default:
                 permit==false;
