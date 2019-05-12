@@ -13,6 +13,7 @@ cc.Class({
 
     properties: {
         id: null,
+        direction:null,
         directionx: 0,
         directiony: 0,
     },
@@ -67,6 +68,76 @@ cc.Class({
 
                 }
         }
+    },
+    setRotate: function (flag) {
+        var rotate;
+
+        if (this.direction == "up") {
+            if (flag == "left") {
+                rotate = cc.rotateBy(0, 90);
+                this.rotationx = 180;
+                this.rotationy = 0;
+            } else if (flag == "down") {
+                rotate = cc.rotateBy(0, 180);
+                this.rotationx = -90;
+                this.rotationy = 0;
+            } else {
+                rotate = cc.rotateBy(0, 270);
+                this.rotationx = 0;
+                this.rotationy = 270;
+            }
+
+
+        } else if (this.direction == "down") {
+            if (flag == "right") {
+                rotate = cc.rotateBy(0, 90);
+                this.rotationx = 0;
+                this.rotationy = 0;
+            } else if (flag == "up") {
+                rotate = cc.rotateBy(0, 180);
+                this.rotationx = 0;
+                this.rotationy = -90;
+            } else {
+                rotate = cc.rotateBy(0, 270);
+                this.rotationx = 0;
+                this.rotationy = 270;
+            }
+
+        }
+        else if (this.direction == "left") {
+            if (flag == "down") {
+                rotate = cc.rotateBy(0, 90);
+                this.rotationx = 0;
+                this.rotationy = 90;
+            } else if (flag == "right") {
+                rotate = cc.rotateBy(0, 180);
+                this.rotationx = 0;
+                this.rotationy = 180;
+            } else {
+                rotate = cc.rotateBy(0, 270);
+                this.rotationx = 0;
+                this.rotationy = 270;
+
+            }
+
+        } else {
+            if (flag == "up") {
+                rotate = cc.rotateBy(0, 90);
+                this.rotationx = 0;
+                this.rotationy = 90;
+            } else if (flag == "left") {
+                rotate = cc.rotateBy(0, 180);
+                this.rotationx = 0;
+                this.rotationy = 180;
+            } else {
+                rotate = cc.rotateBy(0, 270);
+                this.rotationx = 0;
+                this.rotationy = 270;
+            }
+
+        }
+        return rotate;
+
     },
 
     // LIFE-CYCLE CALLBACKS:

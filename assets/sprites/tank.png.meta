@@ -6,7 +6,7 @@
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
   "subMetas": {
-    "Tank": {
+    "tank": {
       "ver": "1.0.3",
       "uuid": "eaed9c44-b3d2-4cef-b4fa-479698bdba6a",
       "rawTextureUuid": "a6114ef8-4e16-4b37-9f7f-bf9719c56fa0",
