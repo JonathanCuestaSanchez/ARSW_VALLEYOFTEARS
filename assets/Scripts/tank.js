@@ -105,7 +105,64 @@ cc.Class({
         return rotate;
 
     },
+    setRotateEne: function (Player,flag) {
+        var rotate;
+        console.log(Player.direction,flag);
+        if (Player.direction == "up") {
+            if (flag == "left") {
+                rotate = cc.rotateBy(0, 90);
+                
+            } else if (flag == "down") {
+                
+                rotate = cc.rotateBy(0, 180);
+               
+            } else {
+                rotate = cc.rotateBy(0, 270);
+                
+            }
 
+
+        } else if (Player.direction == "down") {
+            if (flag == "right") {
+                rotate = cc.rotateBy(0, 90);
+                
+            } else if (flag == "up") {
+                rotate = cc.rotateBy(0, 180);
+            } else {
+                rotate = cc.rotateBy(0, 270);
+                
+            }
+
+        }
+        else if (Player.direction == "left") {
+            if (flag == "down") {
+                rotate = cc.rotateBy(0, 90);
+               
+            } else if (flag == "right") {
+                rotate = cc.rotateBy(0, 180);
+               ;
+            } else {
+                rotate = cc.rotateBy(0, 270);
+                
+
+            }
+
+        } else {
+            if (flag == "up") {
+                rotate = cc.rotateBy(0, 90);
+                
+            } else if (flag == "left") {
+                rotate = cc.rotateBy(0, 180);
+                
+            } else {
+                rotate = cc.rotateBy(0, 270);
+                
+            }
+
+        }
+        return rotate;
+
+    },
 
     onKeyEvent(event) {
         // set a flag when key pressed
@@ -164,7 +221,7 @@ cc.Class({
 
                     this.directiony -= 50;
 
-                    this.rota = "down";
+                    this.direction = "down";
                     this.node.runAction(cc.moveBy(0.4, 0, -50));
                     this.movimientoEnemy("down");
 
@@ -332,10 +389,9 @@ cc.Class({
                     self.loadedPlayers.forEach(
                         function (player) {
                             if (move.id == player.id && player.id != self.id) {
-                                console.log("si entra a revisar");
                                 
-                                console.log(player);
                                 self.moveEnemi(player,move.tecla);
+                                console.log(move)
                             }
                         }
                     );
@@ -348,8 +404,11 @@ cc.Class({
 
     },
     moveEnemi: function (Player, direction) {
+        var flag=Player.direction;
+        var permit=true;
         switch (direction) {
             case "a":
+                
                 Player.direction = "left";
                 break;
             case "left":
@@ -386,16 +445,22 @@ cc.Class({
                 Player.direction = "down";
                 break;
             case "down":
-
-                if ((Player.directiony - 50) > -301 ) {
-
+                if ((Player.directiony - 50) > -301 ) {          
                     Player.directiony -= 50;
-                   
+                    Player.direction="down"
                     Player.runAction(cc.moveBy(0.4, 0, -50));
-
-
                 }
+            default:
+                permit==false;
+        
         }
+        if (flag != Player.direction && permit) {
+            
+            Player.Dir = this.setRotateEne(Player,flag);
+            Player.runAction(this.setRotateEne(Player,flag));
+            console.log("deberia RotarloxD")
+        }
+        
     },
     setstart: function () {
         var self = this;
