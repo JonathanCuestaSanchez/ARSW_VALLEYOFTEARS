@@ -525,6 +525,7 @@ cc.Class({
     setstartene: function (player,pos) {
         var self = this;
         if (pos == 0) {
+            player.direction="up";
         } else if (pos == 1) {
             player.direction="down";
             player.Dir = self.setRotateEne(player,"up");
@@ -536,7 +537,7 @@ cc.Class({
         } else if (pos == 3) {
             player.direction="right";
             player.Dir = self.setRotateEne(player,"up");
-            player.runAction(self.setRotateEne(player,"up"));
+            player.runAction(self.setRotateEne(player,  "up"));
         }
     },
     loadAllPlayers: function () {
