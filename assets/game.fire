@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.5631414473684211,
-      "y": 0.5631414473684211,
+      "x": 0.6070974421975229,
+      "y": 0.6070974421975229,
       "z": 1
     },
     "_quat": {
@@ -629,6 +629,7 @@
     },
     "_enabled": true,
     "life": -1,
+    "id": 0,
     "_id": "52mdJ0zJJHGq7GDSPSUM/C"
   },
   {
@@ -1075,6 +1076,7 @@
     },
     "_enabled": true,
     "life": 5,
+    "id": 0,
     "_id": "c8ET5G/ZpDPYn+BEz2yxJ9"
   },
   {
@@ -1197,6 +1199,7 @@
     },
     "_enabled": true,
     "life": 5,
+    "id": 1,
     "_id": "15btmc981NoJ4NNR2ioAco"
   },
   {
@@ -1319,6 +1322,7 @@
     },
     "_enabled": true,
     "life": 5,
+    "id": 2,
     "_id": "a47VlrwEZBLa0PoPMYSH49"
   },
   {
@@ -1441,6 +1445,7 @@
     },
     "_enabled": true,
     "life": -1,
+    "id": 3,
     "_id": "4bO7qIfhxP86k2Ts2Aakel"
   },
   {
@@ -1563,6 +1568,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 4,
     "_id": "b7nvBOgaBEEYYPB5p9ru/q"
   },
   {
@@ -1685,6 +1691,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 5,
     "_id": "57Hxefpu1HprwqGeO7yEs8"
   },
   {
@@ -1807,6 +1814,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 6,
     "_id": "61F/RaZe5OUaqtLjSixri1"
   },
   {
@@ -1929,6 +1937,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 7,
     "_id": "aeU8k4bzFNVZp2PyuZOjeG"
   },
   {
@@ -2051,6 +2060,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 8,
     "_id": "84KDNuF5FM7ZravwppWa/S"
   },
   {
@@ -2173,6 +2183,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 9,
     "_id": "77y89dDL1GGZV9uRV3YJKL"
   },
   {
@@ -2295,6 +2306,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 10,
     "_id": "ffZ2hBMeRJ56mRGdmVDV7H"
   },
   {
@@ -2417,6 +2429,7 @@
     },
     "_enabled": true,
     "life": 5,
+    "id": 11,
     "_id": "dfYoyl3RJI6bj86HKAcJss"
   },
   {
@@ -2539,6 +2552,7 @@
     },
     "_enabled": true,
     "life": 5,
+    "id": 12,
     "_id": "80aGt1i3BEV77UuRD6adEL"
   },
   {
@@ -2661,6 +2675,7 @@
     },
     "_enabled": true,
     "life": 5,
+    "id": 13,
     "_id": "80rKe17RxID4NVWsEU8Hws"
   },
   {
@@ -2783,6 +2798,7 @@
     },
     "_enabled": true,
     "life": 5,
+    "id": 14,
     "_id": "62j5wo1D9F1aP8H55Ol2Wl"
   },
   {
@@ -2905,6 +2921,7 @@
     },
     "_enabled": true,
     "life": 5,
+    "id": 15,
     "_id": "5bDrZwpo5P4rpNqswlWgny"
   },
   {
@@ -3027,6 +3044,7 @@
     },
     "_enabled": true,
     "life": 5,
+    "id": 16,
     "_id": "e3GtGv6UVA7pqMR0iqtMOP"
   },
   {
@@ -3149,6 +3167,7 @@
     },
     "_enabled": true,
     "life": 5,
+    "id": 17,
     "_id": "27wjRXr6dKx6u27ac/cP5a"
   },
   {
@@ -3271,6 +3290,7 @@
     },
     "_enabled": true,
     "life": 5,
+    "id": 18,
     "_id": "b9PV+JzNtMyYR/6KetgbWk"
   },
   {
@@ -3393,6 +3413,7 @@
     },
     "_enabled": true,
     "life": 5,
+    "id": 19,
     "_id": "40KsYJeVJBspSYP8XCC9sy"
   },
   {
@@ -3515,6 +3536,7 @@
     },
     "_enabled": true,
     "life": 5,
+    "id": 20,
     "_id": "7eCofEZEtHVYd1BB5fgBAu"
   },
   {
@@ -3637,6 +3659,7 @@
     },
     "_enabled": true,
     "life": 5,
+    "id": 21,
     "_id": "cdzIRw9VJEbI7MFxbZmJJO"
   },
   {
@@ -3759,6 +3782,7 @@
     },
     "_enabled": true,
     "life": 5,
+    "id": 22,
     "_id": "ced5Sv0/FMAIZ25KzQRkVS"
   },
   {
@@ -3881,6 +3905,7 @@
     },
     "_enabled": true,
     "life": 5,
+    "id": 23,
     "_id": "4cRQ/nbSNLT4S2quhre+0b"
   },
   {
@@ -4003,6 +4028,7 @@
     },
     "_enabled": true,
     "life": 5,
+    "id": 24,
     "_id": "02YWeBt/9L5Zf2xfmYwRhO"
   },
   {
@@ -4125,6 +4151,7 @@
     },
     "_enabled": true,
     "life": 5,
+    "id": 25,
     "_id": "ebaQmHcYFF2rvjisM3mIy6"
   },
   {
@@ -4247,6 +4274,7 @@
     },
     "_enabled": true,
     "life": 5,
+    "id": 26,
     "_id": "5c5BGsvhBEiocn6RJtOb+f"
   },
   {
@@ -4369,6 +4397,7 @@
     },
     "_enabled": true,
     "life": 5,
+    "id": 27,
     "_id": "10ytkjcr5M7YUqIDKP7ONb"
   },
   {
@@ -4491,6 +4520,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 28,
     "_id": "5ful5cYEVHUq0EyvAOoINo"
   },
   {
@@ -4613,6 +4643,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 29,
     "_id": "3cxlPyN7BOj491R/vxesdv"
   },
   {
@@ -4735,6 +4766,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 30,
     "_id": "6aJsJnH31Kv5rk4P6mvuwg"
   },
   {
@@ -4857,6 +4889,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 31,
     "_id": "c9ugoANgRFSr6BO8HkvmZ6"
   },
   {
@@ -4979,6 +5012,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 32,
     "_id": "937q2r2GhIE7LIwFBRPVG1"
   },
   {
@@ -5101,6 +5135,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 33,
     "_id": "700fC9XRtHKoudbIip0S0v"
   },
   {
@@ -5223,6 +5258,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 34,
     "_id": "eeREx63d5CDpmyUgUn3iwd"
   },
   {
@@ -5345,6 +5381,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 35,
     "_id": "9caxs7okJIP4ii5iCXGCWw"
   },
   {
@@ -5467,6 +5504,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 36,
     "_id": "2aLXWfBFBFubVyPaTCltFU"
   },
   {
@@ -5589,6 +5627,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 37,
     "_id": "8dFON87ixLzYYTMDckolKz"
   },
   {
@@ -5711,6 +5750,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 38,
     "_id": "7coRv4ryNBy46VqkwM8A5G"
   },
   {
@@ -5833,6 +5873,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 39,
     "_id": "a8DefwNd1N5aDtfX56j2kk"
   },
   {
@@ -5955,6 +5996,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 40,
     "_id": "c2I7nhMYVBmLL5cUegu2Ii"
   },
   {
@@ -6077,6 +6119,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 41,
     "_id": "b8W5VtAJNDQrsIxOIA6PUy"
   },
   {
@@ -6199,6 +6242,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 42,
     "_id": "08D7cOqJFEHpRy6YNboXTc"
   },
   {
@@ -6321,6 +6365,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 43,
     "_id": "53+BLXkMhC1boUMyD5D1ms"
   },
   {
@@ -6443,6 +6488,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 44,
     "_id": "12e8wmTOxCfaLoJoPSADTh"
   },
   {
@@ -6565,6 +6611,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 45,
     "_id": "b2lmJ4eQ5FXocHXOf1z6cT"
   },
   {
@@ -6687,6 +6734,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 46,
     "_id": "cf9p6ZQMxJd6VPjzRMkD3n"
   },
   {
@@ -6809,6 +6857,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 47,
     "_id": "06tsB0T3xCPILzWXx4qYA1"
   },
   {
@@ -6931,6 +6980,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 48,
     "_id": "acIIEZG2NPioGP+Ib5J/wj"
   },
   {
@@ -7053,6 +7103,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 49,
     "_id": "c9jkTU3C1OoJl+DY3Ldckp"
   },
   {
@@ -7175,6 +7226,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 50,
     "_id": "87o5gnm0NFkYpQJ0CYnJ1B"
   },
   {
@@ -7297,6 +7349,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 51,
     "_id": "88PxQSpC1G+73A1LmdcI9F"
   },
   {
@@ -7419,6 +7472,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 52,
     "_id": "9fv9yCl9ZI1KGrPqKF9ChC"
   },
   {
@@ -7541,6 +7595,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 53,
     "_id": "87qAAc95dP96LCIN6XL+ps"
   },
   {
@@ -7663,6 +7718,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 54,
     "_id": "e1PixiKK9LgbvVfaHoRD+M"
   },
   {
@@ -7785,6 +7841,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 55,
     "_id": "d8f9Z1M89GdLJVZhfBVnq9"
   },
   {
@@ -7907,6 +7964,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 56,
     "_id": "21TkAG/DZP96HKpQOxcZ2j"
   },
   {
@@ -8029,6 +8087,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 57,
     "_id": "41T/jh/g9N0K8HOEu/tcld"
   },
   {
@@ -8151,6 +8210,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 58,
     "_id": "55lldIKUpJ3KXs7S0e1Ufr"
   },
   {
@@ -8273,6 +8333,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 59,
     "_id": "a56+Qs67dMCIR+HcwBpVTe"
   },
   {
@@ -8395,6 +8456,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 60,
     "_id": "5agaUgXq5FuoiyDNCKVVnI"
   },
   {
@@ -8517,6 +8579,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 61,
     "_id": "e4b9pMLaVOp4pD/gM2J6G6"
   },
   {
@@ -8639,6 +8702,7 @@
     },
     "_enabled": true,
     "life": 3,
+    "id": 62,
     "_id": "a2Zr19NjlGcoR5gZGva3F0"
   },
   {
@@ -9015,6 +9079,8 @@
     },
     "_enabled": true,
     "id": null,
+    "directionx": 0,
+    "directiony": 0,
     "_id": "04i5Om5zpEI6x0WA43i0JY"
   },
   {

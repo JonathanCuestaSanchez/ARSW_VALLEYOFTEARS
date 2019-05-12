@@ -4,7 +4,7 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-
+       
         pos: null,
         id: null,
         stompClient: null,
@@ -259,7 +259,7 @@ cc.Class({
 
     },
     movimientoEnemy: function (tecla) {
-        this.stompClient.send('/app/room-movement', {}, JSON.stringify({
+        this.stompClient.send('/app/movement/'+this.room, {}, JSON.stringify({
             id: this.id,
             tecla: tecla,
         }));
@@ -383,7 +383,7 @@ cc.Class({
 
             .then((stpClient) => {
                 self.stompClient = stpClient;
-                subscribeTopic(self.stompClient, "/topic/room-movement", function (eventBody) {
+                subscribeTopic(self.stompClient, "/topic/room-movement-"+self.room, function (eventBody) {
 
                     var move = JSON.parse(eventBody.body);
                     self.loadedPlayers.forEach(
