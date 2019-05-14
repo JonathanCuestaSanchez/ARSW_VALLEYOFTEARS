@@ -235,6 +235,19 @@ cc.Class({
                 bullet.y = this.node.position.y;
                 // bullet.getComponent("Bullet").posX = this.rotationx;
                 // bullet.getComponent("Bullet").posY = this.rotationy;
+				console.log(this.id);
+				bullet.id = this.id;
+				
+				console.log(bullet);
+				console.log(this.direction);
+				this.stompClient.send('/app/bullet/'+this.room, {}, JSON.stringify({
+					id :   bullet.id,
+					posX : this.node.position.x,
+					posY : this.node.position.y,
+					direccion : this.direction,
+				}));
+				
+				console.log("send desde keylistener ");
                 var scene = cc.find("mapa");
                 scene.addChild(bullet);
                 bullet.active = true;
@@ -266,10 +279,11 @@ cc.Class({
 	
 	makeShoot: function(shootEvent,bullet){
 		//no estoy eguro de que hace esto
-		this.stompClient.send('/app/room-bullet', {}, JSON.stringify({
-			posX : bullet.posX,
-			posY : bullet.posY,
-        }));
+		// this.stompClient.send('/app/bullet', {}, JSON.stringify({
+			// posX : bullet.posX,
+			// posY : bullet.posY,
+        // }));
+		console.log("estoy en make shoot");
 		
 		//no seguro de la necesidad de esto
 		var self = this;
@@ -277,8 +291,8 @@ cc.Class({
 		//instanciamos la bala
 		var bullet = cc.instantiate(this.bullet);
 		
-		// no estoy seguro de como obtener la direccion de la bala (abajo arriba o lados)
-		bullet.getComponent("Bullet").direccion = this.direction;
+		// no estoy seguro de como obtener la direccion de la bala (abajo arriba o lados)(enviando la direccion como evento)
+		bullet.getComponent("Bullet").direccion = shootEvent.direccion;
 		
 		//obtener el lugar de disparo de la bala.
 		bullet.x = shootEvent.posX;
@@ -418,14 +432,15 @@ cc.Class({
                     );
                 });
 				
-				subscribeTopic(self.stompClient, "/topic/bullet", function (eventBody) {
-
+				subscribeTopic(self.stompClient, "/topic/bullet-"+self.room, function (eventBody) {
+					console.log("entre al suscribe de shoot");
                     var bulletEvent = JSON.parse(eventBody.body);
 					
-					if(bulletEvent.id != self.id){
+					// if(bulletEvent.id != self.id){
+						console.log("entrea la condicion de disparar bala");
 						self.makeShoot(bulletEvent,self.bullet);
 						console.log("bala disparada");
-					}
+					// }
                 });
 				
             });
