@@ -159,6 +159,8 @@ cc.Class({
             }
 
         }
+        return rotate;
+
     },
     onKeyEvent(event) {
         // set a flag when key pressed
@@ -217,7 +219,7 @@ cc.Class({
 
                     this.directiony -= 50;
 
-                    this.rota = "down";
+                    this.direction = "down";
                     this.node.runAction(cc.moveBy(0.4, 0, -50));
                     this.movimientoEnemy("down");
 
@@ -233,7 +235,7 @@ cc.Class({
                 bullet.y = this.node.position.y;
                 // bullet.getComponent("Bullet").posX = this.rotationx;
                 // bullet.getComponent("Bullet").posY = this.rotationy;
-                var scene = cc.find("mapa");
+                var scene = cc.find("Canvas");
                 scene.addChild(bullet);
                 bullet.active = true;
 
@@ -283,7 +285,7 @@ cc.Class({
 		bullet.y = shootEvent.posY;
 		
 		//introducir el sprite de la bala a la escena
-		var scene = cc.find("Canvas");
+		var scene = cc.find("mapa");
 		scene.addChild(bullet);
 		bullet.active = true
 	},
@@ -409,8 +411,8 @@ cc.Class({
                     self.loadedPlayers.forEach(
                         function (player) {
                             if (move.id == player.id && player.id != self.id) {
-                                console.log(player);
-                                self.moveEnemi(player, move.tecla);
+                               
+                                self.moveEnemi(player,move.tecla);
                             }
                         }
                     );
@@ -431,12 +433,15 @@ cc.Class({
 
     },
     moveEnemi: function (Player, direction) {
+        var flag=Player.direction;
+        var permit=true;
         switch (direction) {
             case "a":
+                
                 Player.direction = "left";
                 break;
             case "left":
-                if ((Player.directionx - 50) > -451) {
+                if ((Player.directionx - 50) > -451 ) {
                     Player.directionx -= 50;
                     Player.direction = "left";
                     Player.runAction(cc.moveBy(0.4, -50, 0));
@@ -448,7 +453,7 @@ cc.Class({
                 Player.direction = "right";
                 break;
             case "right":
-                if ((Player.directionx + 50) < 451) {
+                if ((Player.directionx + 50) < 451 ) {
                     Player.directionx += 50;
                     Player.direction = "right";
                     Player.runAction(cc.moveBy(0.4, 50, 0));
@@ -459,7 +464,7 @@ cc.Class({
                 Player.direction = "up";
                 break;
             case "up":
-                if ((Player.directiony + 50) < 301) {
+                if ((Player.directiony + 50) < 301 ) {
                     Player.directiony += 50;
                     Player.direction = "up";
                     Player.runAction(cc.moveBy(0.4, 0, 50));
@@ -469,14 +474,14 @@ cc.Class({
                 Player.direction = "down";
                 break;
             case "down":
-
-                if ((Player.directiony - 50) > -301) {
-
+                if ((Player.directiony - 50) > -301 ) {          
                     Player.directiony -= 50;
-
                     Player.runAction(cc.moveBy(0.4, 0, -50));
                     Player.direction = "down";
                 }
+            default:
+                permit==false;
+        
         }
         if (flag != Player.direction && permit) {
             
@@ -494,12 +499,21 @@ cc.Class({
         } else if (self.pos == 1) {
             self.node.x, self.directionx = -100;
             self.node.y, self.directiony = 300;
+            self.direction="down";
+            this.Dir = this.setRotate("up");
+            this.node.runAction(this.setRotate("up"));
         } else if (self.pos == 2) {
             self.node.x, self.directionx = 450;
             self.node.y, self.directiony = 100;
+            self.direction="left";
+            this.Dir = this.setRotate("up");
+            this.node.runAction(this.setRotate("up"));
         } else if (self.pos == 3) {
             self.node.x, self.directionx = -450;
             self.node.y, self.directiony = -100;
+            self.direction="right";
+            this.Dir = this.setRotate("up");
+            this.node.runAction(this.setRotate("up"));
         }
     },
     setstartene: function (player,pos) {
@@ -543,6 +557,10 @@ cc.Class({
                                 plr.y = 300;
                                 plr.directionx = -100;
                                 plr.directiony = 300;
+                                //plr.direction = "down";
+                                //plr.Dir = self.setRotateEne(plr,"up");
+                                //plr.runAction(self.setRotateEne(plr,"up"));
+
                             }
                             if (player.pos == 2) {
                                 plr.x = 450;
@@ -557,7 +575,7 @@ cc.Class({
                                 plr.directiony = -100;
                             }
                             cont++;
-                            var scene = cc.find("mapa");
+                            var scene = cc.find("Canvas");
                             scene.addChild(plr);
                             plr.active = true;
                             self.setstartene(plr,player.pos);
