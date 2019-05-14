@@ -77,7 +77,7 @@ var menu = cc.Class({
 				alert("Room " + self.room + " game has already started ");
 			}
 		};
-		joinRoom(self.id, self.xPos, self.yPos, self.room, callback);
+		joinRoom(self.id, self.room, callback);
 	},
 
 	joinThisRoom: function () {

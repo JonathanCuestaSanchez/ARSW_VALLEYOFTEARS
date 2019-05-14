@@ -9,8 +9,8 @@ export function getRoomPlayers(roomId, callback){
 	
 };
 
-export function joinRoom(playerId, xPosition, yPosition, roomId, callback){
-	axios.put('/rooms/'+roomId+'/players', {id:playerId, x:xPosition, y:yPosition})
+export function joinRoom(playerId, roomId, callback){
+	axios.put('/rooms/'+roomId+'/players', {id:playerId})
 	.then(function(){
 		callback.onSuccess();
 	})
