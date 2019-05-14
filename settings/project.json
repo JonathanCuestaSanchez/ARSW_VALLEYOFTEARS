@@ -28,7 +28,11 @@
     "default",
     "walls"
   ],
+<<<<<<< HEAD
   "last-module-event-record-time": 1557704397844,
+=======
+  "last-module-event-record-time": 1557694932759,
+>>>>>>> 4c2e6fb78ddb663bf3bd2cedf511010a4a82dd64
   "simulator-orientation": false,
   "simulator-resolution": {
     "height": 640,

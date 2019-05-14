@@ -105,8 +105,61 @@ cc.Class({
         return rotate;
 
     },
+    setRotateEne: function (Player,flag) {
+        var rotate;
+        if (Player.direction == "up") {
+            if (flag == "left") {
+                rotate = cc.rotateBy(0, 90);
+                
+            } else if (flag == "down") {
+                rotate = cc.rotateBy(0, 180);
+               
+            } else {
+                rotate = cc.rotateBy(0, 270);
+                
+            }
 
 
+        } else if (Player.direction == "down") {
+            if (flag == "right") {
+                rotate = cc.rotateBy(0, 90);
+                
+            } else if (flag == "up") {
+                
+                rotate = cc.rotateBy(0, 180);
+            } else {
+                rotate = cc.rotateBy(0, 270);
+                
+            }
+
+        }
+        else if (Player.direction == "left") {
+            if (flag == "down") {
+                rotate = cc.rotateBy(0, 90);
+               
+            } else if (flag == "right") {
+                rotate = cc.rotateBy(0, 180);
+               ;
+            } else {
+                rotate = cc.rotateBy(0, 270);
+                
+
+            }
+
+        } else {
+            if (flag == "up") {
+                rotate = cc.rotateBy(0, 90);
+                
+            } else if (flag == "left") {
+                rotate = cc.rotateBy(0, 180);
+                
+            } else {
+                rotate = cc.rotateBy(0, 270);
+                
+            }
+
+        }
+    },
     onKeyEvent(event) {
         // set a flag when key pressed
         var flag = this.direction;
@@ -208,6 +261,32 @@ cc.Class({
         }));
 
     },
+	
+	makeShoot: function(shootEvent,bullet){
+		//no estoy eguro de que hace esto
+		this.stompClient.send('/app/room-bullet', {}, JSON.stringify({
+			posX : bullet.posX,
+			posY : bullet.posY,
+        }));
+		
+		//no seguro de la necesidad de esto
+		var self = this;
+		
+		//instanciamos la bala
+		var bullet = cc.instantiate(this.bullet);
+		
+		// no estoy seguro de como obtener la direccion de la bala (abajo arriba o lados)
+		bullet.getComponent("Bullet").direccion = this.direction;
+		
+		//obtener el lugar de disparo de la bala.
+		bullet.x = shootEvent.posX;
+		bullet.y = shootEvent.posY;
+		
+		//introducir el sprite de la bala a la escena
+		var scene = cc.find("Canvas");
+		scene.addChild(bullet);
+		bullet.active = true
+	},
 
 
     onLoad: function () {
@@ -336,6 +415,17 @@ cc.Class({
                         }
                     );
                 });
+				
+				subscribeTopic(self.stompClient, "/topic/bullet", function (eventBody) {
+
+                    var bulletEvent = JSON.parse(eventBody.body);
+					
+					if(bulletEvent.id != self.id){
+						self.makeShoot(bulletEvent,self.bullet);
+						console.log("bala disparada");
+					}
+                });
+				
             });
         
 
@@ -385,10 +475,16 @@ cc.Class({
                     Player.directiony -= 50;
 
                     Player.runAction(cc.moveBy(0.4, 0, -50));
-
-
+                    Player.direction = "down";
                 }
         }
+        if (flag != Player.direction && permit) {
+            
+            Player.Dir = this.setRotateEne(Player,flag);
+            Player.runAction(this.setRotateEne(Player,flag));
+           
+        }
+        
     },
     setstart: function () {
         var self = this;
@@ -404,6 +500,24 @@ cc.Class({
         } else if (self.pos == 3) {
             self.node.x, self.directionx = -450;
             self.node.y, self.directiony = -100;
+        }
+    },
+    setstartene: function (player,pos) {
+        var self = this;
+        if (pos == 0) {
+            player.direction="up";
+        } else if (pos == 1) {
+            player.direction="down";
+            player.Dir = self.setRotateEne(player,"up");
+            player.runAction(self.setRotateEne(player,"up"));
+        } else if (pos == 2) {
+            player.direction="left";
+            player.Dir = self.setRotateEne(player,"up");
+            player.runAction(self.setRotateEne(player,"up"));
+        } else if (pos == 3) {
+            player.direction="right";
+            player.Dir = self.setRotateEne(player,"up");
+            player.runAction(self.setRotateEne(player,  "up"));
         }
     },
     loadAllPlayers: function () {
@@ -446,6 +560,7 @@ cc.Class({
                             var scene = cc.find("mapa");
                             scene.addChild(plr);
                             plr.active = true;
+                            self.setstartene(plr,player.pos);
                             //self.leftPlayersLabel.string = self.loadedPlayers.length;
                         } else {
 
@@ -467,11 +582,12 @@ cc.Class({
                                 self.node.y = -100;
                             }
                         }
-
+                        
                     }
+                    
                 );
                 self.setstart();
-
+                
 
             },
             onFailed: function (error) {
