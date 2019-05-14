@@ -427,6 +427,14 @@ cc.Class({
 						console.log("bala disparada");
 					}
                 });
+                subscribeTopic(self.stompClient, "/topic/maravilla-" + self.room, function (eventBody) {
+                    var wonderland = JSON.parse(eventBody.body);
+                    //wonderland.pos es el que esta indefinido;
+                    console.log(wonderland.pos,self.pos);
+                    if(wonderland.pos == self.pos){
+                        self.node.destroy();
+                    }
+                });
 				
             });
         
@@ -493,6 +501,7 @@ cc.Class({
     },
     setstart: function () {
         var self = this;
+        this.pos=self.pos;
         if (self.pos == 0) {
             self.node.x, self.directionx = 100;
             self.node.y, self.directiony = -300;
