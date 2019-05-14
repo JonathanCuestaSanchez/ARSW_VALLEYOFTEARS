@@ -105,57 +105,57 @@ cc.Class({
         return rotate;
 
     },
-    setRotateEne: function (Player,flag) {
+    setRotateEne: function (Player, flag) {
         var rotate;
         if (Player.direction == "up") {
             if (flag == "left") {
                 rotate = cc.rotateBy(0, 90);
-                
+
             } else if (flag == "down") {
                 rotate = cc.rotateBy(0, 180);
-               
+
             } else {
                 rotate = cc.rotateBy(0, 270);
-                
+
             }
 
 
         } else if (Player.direction == "down") {
             if (flag == "right") {
                 rotate = cc.rotateBy(0, 90);
-                
+
             } else if (flag == "up") {
-                
+
                 rotate = cc.rotateBy(0, 180);
             } else {
                 rotate = cc.rotateBy(0, 270);
-                
+
             }
 
         }
         else if (Player.direction == "left") {
             if (flag == "down") {
                 rotate = cc.rotateBy(0, 90);
-               
+
             } else if (flag == "right") {
                 rotate = cc.rotateBy(0, 180);
-               ;
+                ;
             } else {
                 rotate = cc.rotateBy(0, 270);
-                
+
 
             }
 
         } else {
             if (flag == "up") {
                 rotate = cc.rotateBy(0, 90);
-                
+
             } else if (flag == "left") {
                 rotate = cc.rotateBy(0, 180);
-                
+
             } else {
                 rotate = cc.rotateBy(0, 270);
-                
+
             }
 
         }
@@ -235,19 +235,19 @@ cc.Class({
                 bullet.y = this.node.position.y;
                 // bullet.getComponent("Bullet").posX = this.rotationx;
                 // bullet.getComponent("Bullet").posY = this.rotationy;
-				console.log(this.id);
-				bullet.id = this.id;
-				
-				console.log(bullet);
-				console.log(this.direction);
-				this.stompClient.send('/app/bullet/'+this.room, {}, JSON.stringify({
-					id :   bullet.id,
-					posX : this.node.position.x,
-					posY : this.node.position.y,
-					direccion : this.direction,
-				}));
-				
-				console.log("send desde keylistener ");
+                //console.log(this.id);
+                bullet.id = this.id;
+
+                //console.log(bullet);
+                //console.log(this.direction);
+                this.stompClient.send('/app/bullet/' + this.room, {}, JSON.stringify({
+                    id: bullet.id,
+                    posX: this.node.position.x,
+                    posY: this.node.position.y,
+                    direccion: this.direction,
+                }));
+
+                //console.log("send desde keylistener ");
                 var scene = cc.find("mapa");
                 scene.addChild(bullet);
                 bullet.active = true;
@@ -276,33 +276,33 @@ cc.Class({
         }));
 
     },
-	
-	makeShoot: function(shootEvent,bullet){
-		//no estoy eguro de que hace esto
-		// this.stompClient.send('/app/bullet', {}, JSON.stringify({
-			// posX : bullet.posX,
-			// posY : bullet.posY,
+
+    makeShoot: function (shootEvent, bullet) {
+        //no estoy eguro de que hace esto
+        // this.stompClient.send('/app/bullet', {}, JSON.stringify({
+        // posX : bullet.posX,
+        // posY : bullet.posY,
         // }));
-		console.log("estoy en make shoot");
-		
-		//no seguro de la necesidad de esto
-		var self = this;
-		
-		//instanciamos la bala
-		var bullet = cc.instantiate(this.bullet);
-		
-		// no estoy seguro de como obtener la direccion de la bala (abajo arriba o lados)(enviando la direccion como evento)
-		bullet.getComponent("Bullet").direccion = shootEvent.direccion;
-		
-		//obtener el lugar de disparo de la bala.
-		bullet.x = shootEvent.posX;
-		bullet.y = shootEvent.posY;
-		
-		//introducir el sprite de la bala a la escena
-		var scene = cc.find("mapa");
-		scene.addChild(bullet);
-		bullet.active = true
-	},
+        //console.log("estoy en make shoot");
+
+        //no seguro de la necesidad de esto
+        var self = this;
+
+        //instanciamos la bala
+        var bullet = cc.instantiate(this.bullet);
+
+        // no estoy seguro de como obtener la direccion de la bala (abajo arriba o lados)(enviando la direccion como evento)
+        bullet.getComponent("Bullet").direccion = shootEvent.direccion;
+
+        //obtener el lugar de disparo de la bala.
+        bullet.x = shootEvent.posX;
+        bullet.y = shootEvent.posY;
+
+        //introducir el sprite de la bala a la escena
+        var scene = cc.find("mapa");
+        scene.addChild(bullet);
+        bullet.active = true
+    },
 
 
     onLoad: function () {
@@ -425,46 +425,65 @@ cc.Class({
                     self.loadedPlayers.forEach(
                         function (player) {
                             if (move.id == player.id && player.id != self.id) {
-                               
-                                self.moveEnemi(player,move.tecla);
+
+                                self.moveEnemi(player, move.tecla);
                             }
                         }
                     );
                 });
-				
-				subscribeTopic(self.stompClient, "/topic/bullet-"+self.room, function (eventBody) {
-					console.log("entre al suscribe de shoot");
+
+                subscribeTopic(self.stompClient, "/topic/bullet-" + self.room, function (eventBody) {
+                    //console.log("entre al suscribe de shoot");
                     var bulletEvent = JSON.parse(eventBody.body);
-					
-					// if(bulletEvent.id != self.id){
-						console.log("entrea la condicion de disparar bala");
-						self.makeShoot(bulletEvent,self.bullet);
-						console.log("bala disparada");
-					// }
+
+                    // if(bulletEvent.id != self.id){
+                    //console.log("entrea la condicion de disparar bala");
+                    self.makeShoot(bulletEvent, self.bullet);
+                    //console.log("bala disparada");
+                    // }
                 });
                 subscribeTopic(self.stompClient, "/topic/maravilla-" + self.room, function (eventBody) {
                     var wonderland = JSON.parse(eventBody.body);
-                    //wonderland.pos es el que esta indefinido;
-                    console.log(wonderland.pos,self.pos);
-                    if(wonderland.pos == self.pos){
+                    var scene = cc.find("mapa");
+                    //console.log(wonderland);
+                    if (wonderland.pos == self.pos) {
                         self.node.destroy();
+                    } else {
+                        if (wonderland.pos == 0) {
+                            scene.getChildByName("maravilla1").destroy();
+                        } else if (wonderland.pos == 1) {
+                            scene.getChildByName("maravilla4").destroy();
+                        } else if (wonderland.pos == 2) {
+                            scene.getChildByName("maravilla3").destroy();
+                        } else {
+
+                            scene.getChildByName("maravilla2").destroy();
+                        }
+                        self.loadedPlayers.forEach(
+                            function (player) {
+                                console.log(player);
+                                if (player.pos == wonderland.pos) {
+                                    player.destroy();
+                                }
+                            }
+                        );
                     }
                 });
-				
+
             });
-        
+
 
     },
     moveEnemi: function (Player, direction) {
-        var flag=Player.direction;
-        var permit=true;
+        var flag = Player.direction;
+        var permit = true;
         switch (direction) {
             case "a":
-                
+
                 Player.direction = "left";
                 break;
             case "left":
-                if ((Player.directionx - 50) > -451 ) {
+                if ((Player.directionx - 50) > -451) {
                     Player.directionx -= 50;
                     Player.direction = "left";
                     Player.runAction(cc.moveBy(0.4, -50, 0));
@@ -476,7 +495,7 @@ cc.Class({
                 Player.direction = "right";
                 break;
             case "right":
-                if ((Player.directionx + 50) < 451 ) {
+                if ((Player.directionx + 50) < 451) {
                     Player.directionx += 50;
                     Player.direction = "right";
                     Player.runAction(cc.moveBy(0.4, 50, 0));
@@ -487,7 +506,7 @@ cc.Class({
                 Player.direction = "up";
                 break;
             case "up":
-                if ((Player.directiony + 50) < 301 ) {
+                if ((Player.directiony + 50) < 301) {
                     Player.directiony += 50;
                     Player.direction = "up";
                     Player.runAction(cc.moveBy(0.4, 0, 50));
@@ -497,65 +516,66 @@ cc.Class({
                 Player.direction = "down";
                 break;
             case "down":
-                if ((Player.directiony - 50) > -301 ) {          
+                if ((Player.directiony - 50) > -301) {
                     Player.directiony -= 50;
                     Player.runAction(cc.moveBy(0.4, 0, -50));
                     Player.direction = "down";
                 }
             default:
-                permit==false;
-        
+                permit == false;
+
         }
         if (flag != Player.direction && permit) {
-            
-            Player.Dir = this.setRotateEne(Player,flag);
-            Player.runAction(this.setRotateEne(Player,flag));
-           
+
+            Player.Dir = this.setRotateEne(Player, flag);
+            Player.runAction(this.setRotateEne(Player, flag));
+
         }
-        
+
     },
     setstart: function () {
         var self = this;
-        this.pos=self.pos;
+        this.pos = self.pos;
+        this.loadedPlayers = self.loadedPlayers;
         if (self.pos == 0) {
             self.node.x, self.directionx = 100;
             self.node.y, self.directiony = -300;
         } else if (self.pos == 1) {
             self.node.x, self.directionx = -100;
             self.node.y, self.directiony = 300;
-            self.direction="down";
+            self.direction = "down";
             this.Dir = this.setRotate("up");
             this.node.runAction(this.setRotate("up"));
         } else if (self.pos == 2) {
             self.node.x, self.directionx = 450;
             self.node.y, self.directiony = 100;
-            self.direction="left";
+            self.direction = "left";
             this.Dir = this.setRotate("up");
             this.node.runAction(this.setRotate("up"));
         } else if (self.pos == 3) {
             self.node.x, self.directionx = -450;
             self.node.y, self.directiony = -100;
-            self.direction="right";
+            self.direction = "right";
             this.Dir = this.setRotate("up");
             this.node.runAction(this.setRotate("up"));
         }
     },
-    setstartene: function (player,pos) {
+    setstartene: function (player, pos) {
         var self = this;
         if (pos == 0) {
-            player.direction="up";
+            player.direction = "up";
         } else if (pos == 1) {
-            player.direction="down";
-            player.Dir = self.setRotateEne(player,"up");
-            player.runAction(self.setRotateEne(player,"up"));
+            player.direction = "down";
+            player.Dir = self.setRotateEne(player, "up");
+            player.runAction(self.setRotateEne(player, "up"));
         } else if (pos == 2) {
-            player.direction="left";
-            player.Dir = self.setRotateEne(player,"up");
-            player.runAction(self.setRotateEne(player,"up"));
+            player.direction = "left";
+            player.Dir = self.setRotateEne(player, "up");
+            player.runAction(self.setRotateEne(player, "up"));
         } else if (pos == 3) {
-            player.direction="right";
-            player.Dir = self.setRotateEne(player,"up");
-            player.runAction(self.setRotateEne(player,  "up"));
+            player.direction = "right";
+            player.Dir = self.setRotateEne(player, "up");
+            player.runAction(self.setRotateEne(player, "up"));
         }
     },
     loadAllPlayers: function () {
@@ -570,6 +590,7 @@ cc.Class({
                             var plr = cc.instantiate(self.enem);
                             self.loadedPlayers.push(plr);
                             plr.id = player.id;
+                            plr.pos = player.pos;
                             if (player.pos == 0) {
                                 plr.x = 100;
                                 plr.y = -300;
@@ -602,7 +623,7 @@ cc.Class({
                             var scene = cc.find("mapa");
                             scene.addChild(plr);
                             plr.active = true;
-                            self.setstartene(plr,player.pos);
+                            self.setstartene(plr, player.pos);
                             //self.leftPlayersLabel.string = self.loadedPlayers.length;
                         } else {
 
@@ -624,12 +645,12 @@ cc.Class({
                                 self.node.y = -100;
                             }
                         }
-                        
+
                     }
-                    
+
                 );
                 self.setstart();
-                
+
 
             },
             onFailed: function (error) {

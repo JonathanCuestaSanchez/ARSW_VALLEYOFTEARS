@@ -42,7 +42,8 @@ cc.Class({
 
 
         if (other.node.name == "bullet") {
-
+            console.log("*********************")
+            console.log(this.pos)
             this.stompClient.send('/app/maravilla/' + this.room, {}, JSON.stringify({
                 pos:this.pos,
             }));
