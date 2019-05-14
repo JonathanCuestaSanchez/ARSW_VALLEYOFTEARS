@@ -235,7 +235,7 @@ cc.Class({
                 bullet.y = this.node.position.y;
                 // bullet.getComponent("Bullet").posX = this.rotationx;
                 // bullet.getComponent("Bullet").posY = this.rotationy;
-                var scene = cc.find("Canvas");
+                var scene = cc.find("mapa");
                 scene.addChild(bullet);
                 bullet.active = true;
 
@@ -575,7 +575,7 @@ cc.Class({
                                 plr.directiony = -100;
                             }
                             cont++;
-                            var scene = cc.find("Canvas");
+                            var scene = cc.find("mapa");
                             scene.addChild(plr);
                             plr.active = true;
                             self.setstartene(plr,player.pos);
