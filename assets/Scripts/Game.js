@@ -38,10 +38,6 @@ cc.Class({
                     var pointReceived=JSON.parse(eventbody.body);
                 });
             }
-<<<<<<< HEAD
-            );       
-            console.log('Connected: ');z
-=======
             );
    
         
@@ -53,7 +49,6 @@ cc.Class({
     
 
 
->>>>>>> 54867aff303ca0edd788580a53cb8dea5a06039f
     },  
     onLoad () {
         this.stompClient=null;
