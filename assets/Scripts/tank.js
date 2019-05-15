@@ -449,23 +449,13 @@ cc.Class({
                 subscribeTopic(self.stompClient, "/topic/maravilla-" + self.room, function (eventBody) {
                     var wonderland = JSON.parse(eventBody.body);
                     var scene = cc.find("mapa");
-                    //console.log(wonderland);
                     if (wonderland.pos == self.pos) {
                         alert("perdiste");
                         self.node.destroy();
                     } else {
-                        if (wonderland.pos == 0) {
-                            scene.getChildByName("maravilla1").destroy();
-                        } else if (wonderland.pos == 1) {
-                            scene.getChildByName("maravilla4").destroy();
-                        } else if (wonderland.pos == 2) {
-                            scene.getChildByName("maravilla3").destroy();
-                        } else {
-                            scene.getChildByName("maravilla2").destroy();
-                        }
                         self.loadedPlayers.forEach(
                             function (player) {
-                                
+                                console.log(player)
                                 if (player.pos == wonderland.pos) {
                                     self.jugadores -=1;
                                     if (self.jugadores==1){
