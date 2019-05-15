@@ -22,7 +22,7 @@ export function subscribeTopic(stompClient, room, callback) {
 };
 
 export function getStompClientsSize(){
-	console.log(clients);
+	//	console.log(clients);
 	return clients.length;
 }
 export function unsubscribeTopic(){
