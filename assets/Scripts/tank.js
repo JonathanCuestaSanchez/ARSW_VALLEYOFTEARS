@@ -9,6 +9,7 @@ cc.Class({
         id: null,
         stompClient: null,
 
+        jugadores: 0,
         directionx: 0,
         directiony: 0,
         direction: "up",
@@ -276,6 +277,9 @@ cc.Class({
         }));
 
     },
+    winnerchicken:function (){
+        alert("you win");
+    },
 
     makeShoot: function (shootEvent, bullet) {
         //no estoy eguro de que hace esto
@@ -447,6 +451,7 @@ cc.Class({
                     var scene = cc.find("mapa");
                     //console.log(wonderland);
                     if (wonderland.pos == self.pos) {
+                        alert("perdiste");
                         self.node.destroy();
                     } else {
                         if (wonderland.pos == 0) {
@@ -456,13 +461,16 @@ cc.Class({
                         } else if (wonderland.pos == 2) {
                             scene.getChildByName("maravilla3").destroy();
                         } else {
-
                             scene.getChildByName("maravilla2").destroy();
                         }
                         self.loadedPlayers.forEach(
                             function (player) {
-                                console.log(player);
+                                
                                 if (player.pos == wonderland.pos) {
+                                    self.jugadores -=1;
+                                    if (self.jugadores==1){
+                                        self.winnerchicken();
+                                    }
                                     player.destroy();
                                 }
                             }
@@ -580,6 +588,7 @@ cc.Class({
     },
     loadAllPlayers: function () {
         var self = this;
+        this.jugadores=4;
         var callback = {
             onSuccess: function (response) {
                 var cont = 2;
