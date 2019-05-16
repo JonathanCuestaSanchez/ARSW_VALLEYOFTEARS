@@ -9,6 +9,14 @@ cc.Class({
         id: null,
         stompClient: null,
 
+        racha: 0,
+        kills: 0,
+        canracha1:false,
+        canracha2:false,
+        canracha3:false,
+        racha1: false,
+        racha2: false,
+        racha3: false,
         jugadores: 0,
         directionx: 0,
         directiony: 0,
@@ -254,7 +262,24 @@ cc.Class({
                 bullet.active = true;
 
                 break;
-
+            case cc.macro.KEY.shift:
+                if (this.canracha1) {
+                    console.log("-------------------1");
+                    this.racha1=true;
+                }
+                break;
+            case cc.macro.KEY.q:
+                if (this.canracha2) {
+                    console.log("-----------------2");
+                    this.racha2=true;
+                }
+                break;
+            case cc.macro.KEY.e:
+                if (this.canracha3) {
+                    console.log("----------3");
+                    this.racha3=true;
+                }
+                break;
             default:
                 permit = false;
 
@@ -277,7 +302,7 @@ cc.Class({
         }));
 
     },
-    winnerchicken:function (){
+    winnerchicken: function () {
         alert("you win");
     },
 
@@ -301,7 +326,7 @@ cc.Class({
         //obtener el lugar de disparo de la bala.
         bullet.x = shootEvent.posX;
         bullet.y = shootEvent.posY;
-
+        bullet.id = shootEvent.id;
         //introducir el sprite de la bala a la escena
         var scene = cc.find("mapa");
         scene.addChild(bullet);
@@ -315,6 +340,10 @@ cc.Class({
         this.username = cc.find("form").getComponent("Menu").username;
         this.id = cc.find("form").getComponent("Menu").id;
         this.players = null;
+
+        this.kills = 0;
+        this.racha = 0;
+        this.dead = false;
 
         this.connectAndSubscribe();
         cc.audioEngine.stopAll();
@@ -344,48 +373,63 @@ cc.Class({
     },
     onCollisionEnter: function (other, self) {
 
+        if (other.node.name == "bullet" && !this.racha1) {
+            this.dead = true;
+            
+            this.muerte(this.dead);
+            this.racha = 0;
+            this.stompClient.send('/app/kill-' + this.room, {}, JSON.stringify({
 
-        var otherAabb = other.world.aabb;
-        var otherPreAabb = other.world.preAabb.clone();
-        var selfAabb = self.world.aabb;
-        var selfPreAabb = self.world.preAabb.clone();
+                idK: other.node.id,
+                idM: this.id,
+            }));
+        } else if (other.node.name == "Wall1" || other.node.name == "Wall3" || other.node.name == "wall2" || other.node.name == "enem") {
+
+            var otherAabb = other.world.aabb;
+            var otherPreAabb = other.world.preAabb.clone();
+            var selfAabb = self.world.aabb;
+            var selfPreAabb = self.world.preAabb.clone();
 
 
-        if (selfAabb.center.x - otherAabb.center.x < 0 && Math.abs(selfAabb.center.y - otherAabb.center.y) < 50) {
+            if (selfAabb.center.x - otherAabb.center.x < 0 && Math.abs(selfAabb.center.y - otherAabb.center.y) < 50) {
 
-            this.collisionrigh = true;
-            other.touchingX = false;
-            other.touchingY = false;
+                this.collisionrigh = true;
+                other.touchingX = false;
+                other.touchingY = false;
+
+            }
+
+
+            if (Math.abs(selfAabb.center.y - otherAabb.center.y) < 50 && selfAabb.center.x - otherAabb.center.x > 0) {
+                this.collisionleft = true;
+                other.touchingX = true;
+                other.touchingY = false;
+            }
+
+
+            if (selfAabb.center.y - otherAabb.center.y < 0 && Math.abs(selfAabb.center.x - otherAabb.center.x) < 50) {
+
+                this.collisionup = true;
+                other.touchingX = false;
+                other.touchingY = true;
+
+            }
+            if (Math.abs(selfAabb.center.x - otherAabb.center.x) < 50 && selfAabb.center.y - otherAabb.center.y > 0) {
+
+
+                this.collisiondown = true;
+                other.touchingX = true;
+                other.touchingY = true;
+            }
 
         }
-
-
-        if (Math.abs(selfAabb.center.y - otherAabb.center.y) < 50 && selfAabb.center.x - otherAabb.center.x > 0) {
-            this.collisionleft = true;
-            other.touchingX = true;
-            other.touchingY = false;
+        if(this.racha1){
+            this.racha1=false;
         }
-
-
-        if (selfAabb.center.y - otherAabb.center.y < 0 && Math.abs(selfAabb.center.x - otherAabb.center.x) < 50) {
-
-            this.collisionup = true;
-            other.touchingX = false;
-            other.touchingY = true;
-
-        }
-        if (Math.abs(selfAabb.center.x - otherAabb.center.x) < 50 && selfAabb.center.y - otherAabb.center.y > 0) {
-
-
-            this.collisiondown = true;
-            other.touchingX = true;
-            other.touchingY = true;
-        }
-
-
 
 
     },
+
     onCollisionExit: function (other) {
 
 
@@ -454,11 +498,10 @@ cc.Class({
                         self.node.destroy();
                     } else {
                         self.loadedPlayers.forEach(
-                            function (player) {
-                                console.log(player)
+                            function (player) {                              
                                 if (player.pos == wonderland.pos) {
-                                    self.jugadores -=1;
-                                    if (self.jugadores==1){
+                                    self.jugadores -= 1;
+                                    if (self.jugadores == 1) {
                                         self.winnerchicken();
                                     }
                                     player.destroy();
@@ -466,6 +509,32 @@ cc.Class({
                             }
                         );
                     }
+                });
+                subscribeTopic(self.stompClient, "/topic/kill-" + self.room, function (eventBody) {
+                    var kill = JSON.parse(eventBody.body);
+                    if (kill.idK == self.id) {
+                        self.kills += 1;
+                        self.racha += 1;
+                        
+                        if(self.racha==1){
+                            self.canracha1=true;
+                        }
+                        if(self.racha==2){
+                            thiselfs.canracha2=true;
+                        }
+                        if(self.racha==3){
+                            self.canracha3=true;
+                            self.racha=0;
+                        }
+                    }
+                    self.loadedPlayers.forEach(
+                        function (player) {
+                            if (kill.idM == player.id) {                                
+                                self.muerteene(player);
+                            }
+
+                        }
+                    );
                 });
 
             });
@@ -578,7 +647,7 @@ cc.Class({
     },
     loadAllPlayers: function () {
         var self = this;
-        this.jugadores=4;
+        this.jugadores = 4;
         var callback = {
             onSuccess: function (response) {
                 var cont = 2;
@@ -659,6 +728,51 @@ cc.Class({
         };
         getRoomPlayers(self.room, callback);
     },
+    muerte: function () {
+        if (this.pos == 0) {
+
+            this.node.x = 100;
+            this.node.y = -300;
+        }
+        if (this.pos == 1) {
+            this.node.x = -100;
+            this.node.y = 300;
+        }
+        if (this.pos == 2) {
+            this.node.x = 450;
+            this.node.y = 100;
+        }
+        if (this.pos == 3) {
+            this.node.x = -450;
+            this.node.y = -100;
+        }
+
+
+    },
+    
+    muerteene: function (ene) {
+
+        if (ene.pos == 0) {
+
+            ene.x = 100;
+            ene.y = -300;
+        }
+        if (ene.pos == 1) {
+
+            ene.x = -100;
+            ene.y = 300;
+        }
+        if (ene.pos == 2) {
+
+            ene.x = 450;
+            ene.y = 100;
+        }
+        if (ene.pos == 3) {
+
+            ene.x = -450;
+            ene.y = -100;
+        }
+    },
 
 
 
@@ -671,7 +785,5 @@ cc.Class({
 
 
 
-    //update (dt) {
 
-    //},
 });
