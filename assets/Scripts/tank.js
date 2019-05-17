@@ -501,9 +501,12 @@ cc.Class({
                 });
                 subscribeTopic(self.stompClient, "/topic/maravilla-" + self.room, function (eventBody) {
                     var wonderland = JSON.parse(eventBody.body);
-                    var scene = cc.find("mapa");
+                    cc.game.removePersistRootNode(cc.find('form'));
                     if (wonderland.pos == self.pos) {
                         alert("perdiste");
+                        cc.director.loadScene("menu", function(){
+                            self.node.active= false;
+                       });	
                         self.node.destroy();
                     } else {
                         self.loadedPlayers.forEach(
