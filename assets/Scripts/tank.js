@@ -530,7 +530,7 @@ cc.Class({
                             self.canracha1=true;
                         }
                         if (self.racha==2){
-                            thiselfs.canracha2=true;
+                            self.canracha2=true;
                         }
                         if (self.racha==3){
                             self.canracha3=true;
@@ -549,6 +549,7 @@ cc.Class({
 				subscribeTopic(self.stompClient, "/topic/time-" + self.room, function (eventBody) {
                     var abcd = JSON.parse(eventBody.body); 
                     console.log("topico    "+ abcd.id); 
+					
                     console.log("mio    "+ self.id);     
                     console.log("prueba   "+ (self.id!=abcd.id));                
                     if(self.id!=abcd.id){                       
@@ -753,18 +754,22 @@ cc.Class({
 
             this.node.x = 100;
             this.node.y = -300;
+			this.direction="up";
         }
         if (this.pos == 1) {
             this.node.x = -100;
             this.node.y = 300;
+			this.direction="down";
         }
         if (this.pos == 2) {
             this.node.x = 450;
             this.node.y = 100;
+			this.direction="left";
         }
         if (this.pos == 3) {
             this.node.x = -450;
             this.node.y = -100;
+			this.direction="right";
         }
 
 
@@ -776,21 +781,25 @@ cc.Class({
 
             ene.x = 100;
             ene.y = -300;
+			ene.direction="up";
         }
         if (ene.pos == 1) {
 
             ene.x = -100;
             ene.y = 300;
+			ene.direction="down";
         }
         if (ene.pos == 2) {
 
             ene.x = 450;
             ene.y = 100;
+			ene.direction="left";
         }
         if (ene.pos == 3) {
 
             ene.x = -450;
             ene.y = -100;
+			ene.direction="rigth";
         }
     },
 
