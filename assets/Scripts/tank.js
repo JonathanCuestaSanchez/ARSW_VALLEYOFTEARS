@@ -451,7 +451,11 @@ cc.Class({
                     var scene = cc.find("mapa");
                     if (wonderland.pos == self.pos) {
                         alert("perdiste");
-                        self.node.destroy();
+                        self.node.active= false;
+                        cc.director.loadScene("menu", function(){
+
+                        });
+
                     } else {
                         self.loadedPlayers.forEach(
                             function (player) {
