@@ -17,6 +17,7 @@ cc.Class({
         racha1: false,
         racha2: false,
         racha3: false,
+		cronometro: false,
         jugadores: 0,
         directionx: 0,
         directiony: 0,
@@ -175,123 +176,133 @@ cc.Class({
         // set a flag when key pressed
         var flag = this.direction;
         var permit = true;
+        var realTime = new Date();
+        
+        if (this.cronometro) {           
+            if ((realTime.getTime() - this.actualTime.getTime()) / 1000 > 4) {
+                this.cronometro = false;
+            }
 
-
-
-        switch (event.keyCode) {
-            case cc.macro.KEY.a:
-                this.direction = "a";
-                this.movimientoEnemy("left");
-                break;
-            case cc.macro.KEY.left:
-                if ((this.directionx - 50) > -451 && !this.collisionleft) {
-                    this.directionx -= 50;
-                    this.direction = "left";
-                    this.node.runAction(cc.moveBy(0.4, -50, 0));
+        } else {
+            
+            switch (event.keyCode) {
+                case cc.macro.KEY.a:
+                    this.direction = "a";
                     this.movimientoEnemy("left");
-                }
+                    break;
+                case cc.macro.KEY.left:
+                    if ((this.directionx - 50) > -451 && !this.collisionleft) {
+                        this.directionx -= 50;
+                        this.direction = "left";
+                        this.node.runAction(cc.moveBy(0.4, -50, 0));
+                        this.movimientoEnemy("left");
+                    }
 
-                break;
+                    break;
 
-            case cc.macro.KEY.d:
-                this.direction = "right";
-                this.movimientoEnemy("d");
-                break;
-            case cc.macro.KEY.right:
-                if ((this.directionx + 50) < 451 && !this.collisionrigh) {
-                    this.directionx += 50;
+                case cc.macro.KEY.d:
                     this.direction = "right";
-                    this.node.runAction(cc.moveBy(0.4, 50, 0));
-                    this.movimientoEnemy("right");
-                }
-                break;
+                    this.movimientoEnemy("d");
+                    break;
+                case cc.macro.KEY.right:
+                    if ((this.directionx + 50) < 451 && !this.collisionrigh) {
+                        this.directionx += 50;
+                        this.direction = "right";
+                        this.node.runAction(cc.moveBy(0.4, 50, 0));
+                        this.movimientoEnemy("right");
+                    }
+                    break;
 
-            case cc.macro.KEY.w:
-                this.direction = "up";
-                this.movimientoEnemy("w");
-                break;
-            case cc.macro.KEY.up:
-                if ((this.directiony + 50) < 301 && !this.collisionup) {
-                    this.directiony += 50;
+                case cc.macro.KEY.w:
                     this.direction = "up";
-                    this.node.runAction(cc.moveBy(0.4, 0, 50));
-                    this.movimientoEnemy("up");
-                }
-                break;
-            case cc.macro.KEY.s:
-                this.direction = "down";
-                this.movimientoEnemy("s");
-                break;
-            case cc.macro.KEY.down:
-
-                if ((this.directiony - 50) > -301 && !this.collisiondown) {
-
-                    this.directiony -= 50;
-
+                    this.movimientoEnemy("w");
+                    break;
+                case cc.macro.KEY.up:
+                    if ((this.directiony + 50) < 301 && !this.collisionup) {
+                        this.directiony += 50;
+                        this.direction = "up";
+                        this.node.runAction(cc.moveBy(0.4, 0, 50));
+                        this.movimientoEnemy("up");
+                    }
+                    break;
+                case cc.macro.KEY.s:
                     this.direction = "down";
-                    this.node.runAction(cc.moveBy(0.4, 0, -50));
-                    this.movimientoEnemy("down");
+                    this.movimientoEnemy("s");
+                    break;
+                case cc.macro.KEY.down:
+
+                    if ((this.directiony - 50) > -301 && !this.collisiondown) {
+
+                        this.directiony -= 50;
+
+                        this.direction = "down";
+                        this.node.runAction(cc.moveBy(0.4, 0, -50));
+                        this.movimientoEnemy("down");
 
 
-                }
-                break;
+                    }
+                    break;
 
-            case cc.macro.KEY.space:
-                var bullet = cc.instantiate(this.bullet);
+                case cc.macro.KEY.space:
+                    var bullet = cc.instantiate(this.bullet);
 
-                bullet.getComponent("Bullet").direccion = this.direction;
-                bullet.x = this.node.position.x;
-                bullet.y = this.node.position.y;
-                // bullet.getComponent("Bullet").posX = this.rotationx;
-                // bullet.getComponent("Bullet").posY = this.rotationy;
-                //console.log(this.id);
-                bullet.id = this.id;
+                    bullet.getComponent("Bullet").direccion = this.direction;
+                    bullet.x = this.node.position.x;
+                    bullet.y = this.node.position.y;
+                    // bullet.getComponent("Bullet").posX = this.rotationx;
+                    // bullet.getComponent("Bullet").posY = this.rotationy;
+                    //console.log(this.id);
+                    bullet.id = this.id;
 
-                //console.log(bullet);
-                //console.log(this.direction);
-                this.stompClient.send('/app/bullet/' + this.room, {}, JSON.stringify({
-                    id: bullet.id,
-                    posX: this.node.position.x,
-                    posY: this.node.position.y,
-                    direccion: this.direction,
-                }));
+                    //console.log(bullet);
+                    //console.log(this.direction);
+                    this.stompClient.send('/app/bullet/' + this.room, {}, JSON.stringify({
+                        id: bullet.id,
+                        posX: this.node.position.x,
+                        posY: this.node.position.y,
+                        direccion: this.direction,
+                    }));
 
-                //console.log("send desde keylistener ");
-                var scene = cc.find("mapa");
-                scene.addChild(bullet);
-                bullet.active = true;
+                    //console.log("send desde keylistener ");
+                    var scene = cc.find("mapa");
+                    scene.addChild(bullet);
+                    bullet.active = true;
 
-                break;
-            case cc.macro.KEY.shift:
-                if (this.canracha1) {
-                    console.log("-------------------1");
-                    this.racha1=true;
-                }
-                break;
-            case cc.macro.KEY.q:
-                if (this.canracha2) {
-                    console.log("-----------------2");
-                    this.racha2=true;
-                }
-                break;
-            case cc.macro.KEY.e:
-                if (this.canracha3) {
-                    console.log("----------3");
-                    this.racha3=true;
-                }
-                break;
-            default:
-                permit = false;
+                    break;
+                case cc.macro.KEY.shift:
+                    if (this.canracha1) {
+                        console.log("---------------------------------------------");
+                        this.racha1 = true;
+                    }
+                    break;
+                case cc.macro.KEY.q:
+                    if (this.canracha2) {                                            
+                        this.racha2 = true;
+                        this.stompClient.send('/app/time-' + this.room, {}, JSON.stringify({
+                            id :  this.id     ,  
+                            
+                        }));
+
+                    }
+                    break;
+                case cc.macro.KEY.e:
+                    if (this.canracha3) {
+
+                        this.racha3 = true;
+                    }
+                    break;
+                default:
+                    permit = false;
 
 
 
+            }
+
+            if (flag != this.direction && permit) {
+                this.Dir = this.setRotate(flag);
+                this.node.runAction(this.setRotate(flag));
+            }
         }
-
-        if (flag != this.direction && permit) {
-            this.Dir = this.setRotate(flag);
-            this.node.runAction(this.setRotate(flag));
-        }
-
 
 
     },
@@ -340,7 +351,7 @@ cc.Class({
         this.username = cc.find("form").getComponent("Menu").username;
         this.id = cc.find("form").getComponent("Menu").id;
         this.players = null;
-
+		this.cronometro = false;
         this.kills = 0;
         this.racha = 0;
         this.dead = false;
@@ -375,11 +386,9 @@ cc.Class({
 
         if (other.node.name == "bullet" && !this.racha1) {
             this.dead = true;
-            
             this.muerte(this.dead);
             this.racha = 0;
             this.stompClient.send('/app/kill-' + this.room, {}, JSON.stringify({
-
                 idK: other.node.id,
                 idM: this.id,
             }));
@@ -492,18 +501,14 @@ cc.Class({
                 });
                 subscribeTopic(self.stompClient, "/topic/maravilla-" + self.room, function (eventBody) {
                     var wonderland = JSON.parse(eventBody.body);
-                    var scene = cc.find("menu");
-                    //scene.loadScene();
+                    var scene = cc.find("mapa");
                     if (wonderland.pos == self.pos) {
                         alert("perdiste");
-                        cc.game.removePersistRootNode(cc.find('form'));
-                        cc.director.loadScene("menu", function(){
-                            self.node.active= false;
-                        });
-
+                        self.node.destroy();
                     } else {
                         self.loadedPlayers.forEach(
-                            function (player) {                              
+                            function (player) {
+                                console.log(player)
                                 if (player.pos == wonderland.pos) {
                                     self.jugadores -= 1;
                                     if (self.jugadores == 1) {
@@ -521,13 +526,13 @@ cc.Class({
                         self.kills += 1;
                         self.racha += 1;
                         
-                        if(self.racha==1){
+                        if (self.racha==1){
                             self.canracha1=true;
                         }
-                        if(self.racha==2){
+                        if (self.racha==2){
                             thiselfs.canracha2=true;
                         }
-                        if(self.racha==3){
+                        if (self.racha==3){
                             self.canracha3=true;
                             self.racha=0;
                         }
@@ -540,6 +545,16 @@ cc.Class({
 
                         }
                     );
+                });
+				subscribeTopic(self.stompClient, "/topic/time-" + self.room, function (eventBody) {
+                    var abcd = JSON.parse(eventBody.body); 
+                    console.log("topico    "+ abcd.id); 
+                    console.log("mio    "+ self.id);     
+                    console.log("prueba   "+ (self.id!=abcd.id));                
+                    if(self.id!=abcd.id){                       
+                        self.actualTime = new Date();
+                        self.cronometro = true;
+                    }
                 });
 
             });
