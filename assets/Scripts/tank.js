@@ -314,7 +314,15 @@ cc.Class({
 
     },
     winnerchicken: function () {
+        self=this;
+        cc.game.removePersistRootNode(cc.find('form'));
         alert("you win");
+        cc.director.loadScene("menu", function(){
+            self.node.active= false;
+       });
+       
+       //this.node.destroy();
+        
     },
 
     makeShoot: function (shootEvent, bullet) {
@@ -511,7 +519,7 @@ cc.Class({
                     } else {
                         self.loadedPlayers.forEach(
                             function (player) {
-                                console.log(player)
+                                //console.log(player)
                                 if (player.pos == wonderland.pos) {
                                     self.jugadores -= 1;
                                     if (self.jugadores == 1) {
@@ -551,10 +559,10 @@ cc.Class({
                 });
 				subscribeTopic(self.stompClient, "/topic/time-" + self.room, function (eventBody) {
                     var abcd = JSON.parse(eventBody.body); 
-                    console.log("topico    "+ abcd.id); 
+                   //console.log("topico    "+ abcd.id); 
 					
-                    console.log("mio    "+ self.id);     
-                    console.log("prueba   "+ (self.id!=abcd.id));                
+                   // console.log("mio    "+ self.id);     
+                    //console.log("prueba   "+ (self.id!=abcd.id));                
                     if(self.id!=abcd.id){                       
                         self.actualTime = new Date();
                         self.cronometro = true;
